@@ -24,7 +24,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import InfoModal from '../components/InfoModal';
 
-const hello2 = 'world';
+const hello3 = 'world';
 
 export default function App() {
   const [asyncFirstLoad, setAsyncFirstLoad] = useState(false);
