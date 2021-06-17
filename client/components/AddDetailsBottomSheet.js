@@ -16,7 +16,7 @@ import * as Location from "expo-location";
 import { renderIcon, renderTitle, allIcons } from "../services/iconFactory";
 import { postNewCoord } from "../services/apiServices";
 
-export default function AddDetailsBottomSheet ({
+export default function AddDetailsBottomSheet({
   detailsBottomSheetVisible,
   selectedIconString,
   placeName,
@@ -26,86 +26,81 @@ export default function AddDetailsBottomSheet ({
   coords,
   setCoords,
   setDetailsBottomSheetVisible,
-
 }) {
-
-
-
   return (
     <BottomSheet
-        visible={detailsBottomSheetVisible}
-        onBackButtonPress={() => setDetailsBottomSheetVisible(false)}
-        onBackdropPress={() =>  setDetailsBottomSheetVisible(false)}
-      >
-        <View style={styles.bottomAddIconView}>
-          <View style={styles.addIconImgContainer}>
-            <Image
-              source={renderIcon(selectedIconString)}
-              resizeMode="contain"
-              style={styles.addIconImg}
+      visible={detailsBottomSheetVisible}
+      onBackButtonPress={() => setDetailsBottomSheetVisible(false)}
+      onBackdropPress={() => setDetailsBottomSheetVisible(false)}
+    >
+      <View style={styles.bottomAddIconView}>
+        <View style={styles.addIconImgContainer}>
+          <Image
+            source={renderIcon(selectedIconString)}
+            resizeMode="contain"
+            style={styles.addIconImg}
+          />
+        </View>
+        <Text style={[styles.generalText, styles.iconTitleText]}>
+          {renderTitle(selectedIconString)}
+        </Text>
+        <View style={styles.locationContainer}>
+          <Text style={[styles.generalText, styles.propertyText]}>
+            Address detected. Feel free to modify it =)
+          </Text>
+          <View style={styles.editContainer}>
+            <TextInput
+              onChangeText={(text) => onChangePlaceName(text)}
+              value={placeName}
+              style={[
+                styles.generalText,
+                styles.iconText,
+                styles.placeNameText,
+              ]}
             />
           </View>
-          <Text style={[styles.generalText, styles.iconTitleText]}>
-            {renderTitle(selectedIconString)}
-          </Text>
-          <View style={styles.locationContainer}>
-            <Text style={[styles.generalText, styles.propertyText]}>
-              Address detected. Feel free to modify it =)
-            </Text>
-            <View style={styles.editContainer}>
-              <TextInput
-                onChangeText={(text) => onChangePlaceName(text)}
-                value={placeName}
-                style={[
-                  styles.generalText,
-                  styles.iconText,
-                  styles.placeNameText,
-                ]}
-              />
-            </View>
-          </View>
-          <View style={styles.locationContainer}>
-            <Text style={[styles.generalText, styles.propertyText]}>
-              Provide some details to help even more =)
-            </Text>
-            <View style={[styles.editContainer, styles.descriptionContainer]}>
-              <TextInput
-                multiline={true}
-                onChangeText={(text) => onChangeDescription(text)}
-                value={description}
-                style={[
-                  styles.generalText,
-                  styles.iconText,
-                  styles.descriptionText,
-                ]}
-              />
-            </View>
-          </View>
-
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={() => {
-              const newCoordinate = {
-                placeName: placeName,
-                icon: selectedIconString,
-                latitude: iconEvent.coordinate.latitude,
-                longitude: iconEvent.coordinate.longitude,
-                description: description === "" ? "" : description,
-                score: 0,
-              };
-              setCoords([...coords, newCoordinate]);
-              postNewCoord(newCoordinate);
-              setBottomSheetVisible(false);
-              setDetailsBottomSheetVisible(false);
-            }}
-          >
-            <Text style={[styles.generalText, styles.textStyle]}>Send</Text>
-          </TouchableOpacity>
         </View>
-      </BottomSheet>
-  )
-}
+        <View style={styles.locationContainer}>
+          <Text style={[styles.generalText, styles.propertyText]}>
+            Provide some details to help even more =)
+          </Text>
+          <View style={[styles.editContainer, styles.descriptionContainer]}>
+            <TextInput
+              multiline={true}
+              onChangeText={(text) => onChangeDescription(text)}
+              value={description}
+              style={[
+                styles.generalText,
+                styles.iconText,
+                styles.descriptionText,
+              ]}
+            />
+          </View>
+        </View>
 
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => {
+            const newCoordinate = {
+              placeName: placeName,
+              icon: selectedIconString,
+              latitude: iconEvent.coordinate.latitude,
+              longitude: iconEvent.coordinate.longitude,
+              description: description === "" ? "" : description,
+              score: 0,
+            };
+            setCoords([...coords, newCoordinate]);
+            postNewCoord(newCoordinate);
+            setBottomSheetVisible(false);
+            setDetailsBottomSheetVisible(false);
+          }}
+        >
+          <Text style={[styles.generalText, styles.textStyle]}>Send</Text>
+        </TouchableOpacity>
+      </View>
+    </BottomSheet>
+  );
+}
 
 const styles = StyleSheet.create({
   addIconImg: {

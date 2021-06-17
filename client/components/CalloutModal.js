@@ -22,7 +22,6 @@ export default function CalloutModal({
   toggleCalloutToEdit,
   setCoords,
 }) {
-
   return (
     <Modal
       transparent={true}
@@ -39,9 +38,7 @@ export default function CalloutModal({
           />
         </View>
 
-        <ThumbComponent
-          currentCallout={currentCallout}
-        />
+        <ThumbComponent currentCallout={currentCallout} />
 
         <View style={styles.iconTitle}>
           <Text style={[styles.generalText, styles.iconTitleText]}>

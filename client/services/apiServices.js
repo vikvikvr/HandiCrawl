@@ -21,7 +21,6 @@ export function getBounds(region) {
 
 //fetches the appropriate data from the database
 export async function getCoords(region) {
-
   if (!region) return;
 
   console.log("fetching initiated", region);
@@ -40,7 +39,7 @@ export async function getCoords(region) {
       id: doc.id,
     });
   });
-  console.log("coordsArray before leaving", coordsArray.length >0)
+  console.log("coordsArray before leaving", coordsArray.length > 0);
   return coordsArray;
 
   // I keep this below to test without wasting requests to Firestore (since there's a quota)
@@ -75,12 +74,12 @@ export async function postNewCoord(coord) {
   // console.log('Added document with ID:', res.id);
 }
 
-export async function sendUpdateCoord (coord) {
-  const res = await dbh.collection("coordinates").doc(coord.id).set(coord)
-  console.log('uuuupdaaated', !!res)
+export async function sendUpdateCoord(coord) {
+  const res = await dbh.collection("coordinates").doc(coord.id).set(coord);
+  console.log("uuuupdaaated", !!res);
 }
 
-export async function deleteCoord (coord) {
-  const res = await dbh.collection("coordinates").doc(coord.id).delete()
-  console.log('deleted snif snif ', !!res)
+export async function deleteCoord(coord) {
+  const res = await dbh.collection("coordinates").doc(coord.id).delete();
+  console.log("deleted snif snif ", !!res);
 }

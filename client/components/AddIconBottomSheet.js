@@ -21,7 +21,8 @@ export default function AddIconBottomSheet({
   setCoords,
   coords,
 }) {
-  const [detailsBottomSheetVisible, setDetailsBottomSheetVisible] = useState(false);
+  const [detailsBottomSheetVisible, setDetailsBottomSheetVisible] =
+    useState(false);
   const [placeName, onChangePlaceName] = useState("location name");
   const [description, onChangeDescription] = useState("");
   const [selectedIconString, setSelectedIconString] = useState("");
@@ -33,7 +34,7 @@ export default function AddIconBottomSheet({
   function hasNumber(string) {
     return /\d/.test(string);
   }
-  
+
   //map through all icons and render an icon inside the bottom sheet for each
   //each icon is clickable, and on click, opens the second bottom sheet to add
   //details before sending the post request to the db
@@ -84,7 +85,7 @@ export default function AddIconBottomSheet({
             : location[0].name
         }`
       );
-      console.log("getting here")
+      console.log("getting here");
       setDetailsBottomSheetVisible(true);
     } else {
       setDetailsBottomSheetVisible(false);
