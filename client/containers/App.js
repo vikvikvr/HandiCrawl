@@ -24,6 +24,8 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import InfoModal from "../components/InfoModal";
 
+const hello = "world";
+
 export default function App() {
   const [asyncFirstLoad, setAsyncFirstLoad] = useState(false);
   const [region, setRegion] = useState(null); //state that holds the current region the user is on
