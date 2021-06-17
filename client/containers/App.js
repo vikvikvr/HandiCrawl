@@ -1,17 +1,17 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useCallback } from "react";
-import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState, useCallback } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 import {
   StyleSheet,
   Text,
   View,
   Image,
   Dimensions,
-  TextInput,
-} from "react-native";
-import MapRender from "./MapRender";
-import * as Location from "expo-location";
-import { getCoords, getBounds } from "../services/apiServices";
+  TextInput
+} from 'react-native';
+import MapRender from './MapRender';
+import * as Location from 'expo-location';
+import { getCoords, getBounds } from '../services/apiServices';
 
 import {
   useFonts,
@@ -19,12 +19,12 @@ import {
   K2D_400Regular_Italic,
   K2D_500Medium_Italic,
   K2D_600SemiBold,
-  K2D_800ExtraBold,
-} from "@expo-google-fonts/dev";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import InfoModal from "../components/InfoModal";
+  K2D_800ExtraBold
+} from '@expo-google-fonts/dev';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import InfoModal from '../components/InfoModal';
 
-const hello = "world";
+const hello2 = 'world';
 
 export default function App() {
   const [asyncFirstLoad, setAsyncFirstLoad] = useState(false);
@@ -48,7 +48,7 @@ export default function App() {
     K2D_400Regular_Italic,
     K2D_500Medium_Italic,
     K2D_600SemiBold,
-    K2D_800ExtraBold,
+    K2D_800ExtraBold
   });
 
   //first time loading, get the first area to populate based on user location
@@ -57,13 +57,13 @@ export default function App() {
       try {
         //get user permission to access location
         let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
           return;
         }
         //get user location
         let loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.High,
+          accuracy: Location.Accuracy.High
         });
         //initiate the first states based on user location
         setStoredBounds(getBounds(loc.coords));
@@ -87,7 +87,7 @@ export default function App() {
 
   //function to get new icons from the API service. called when need new icons
   const getNewIcons = async (region) => {
-    console.log("entering getnewicons");
+    console.log('entering getnewicons');
     const newCoords = await getCoords(region);
     if (newCoords) {
       setCoords(newCoords);
@@ -106,7 +106,7 @@ export default function App() {
     - otherwise we call the database and populate the new area
     */
   const updateMapElements = async () => {
-    console.log("entering updateelements, asyncfirstload is", asyncFirstLoad);
+    console.log('entering updateelements, asyncfirstload is', asyncFirstLoad);
     if (!region) return;
     //At launch, the map loads coordinate around an area beyong the simple screen view. this below checks if we're
     //still in the area when the user drags the map. If we're still in them, we don't call the database
@@ -117,7 +117,7 @@ export default function App() {
       region.longitude < storedBounds.maxLong &&
       asyncFirstLoad === true
     ) {
-      console.log("not sending request");
+      console.log('not sending request');
       setStillInBounds(true);
       return;
     }
@@ -125,7 +125,7 @@ export default function App() {
     if (region.latitudeDelta && region.latitudeDelta > maxZoom) {
       setCoords([]);
       setStoredBounds({});
-      return console.log("too far, not fetching");
+      return console.log('too far, not fetching');
     }
     //if all the checks above fail, it means we need to store the new bounds of the area
     //and call the database to populate the area with the appropriate markers(if any)
@@ -195,7 +195,7 @@ export default function App() {
               <Image
                 style={styles.infoIcon}
                 resizeMode="contain"
-                source={require("../assets/infoIcon.png")}
+                source={require('../assets/infoIcon.png')}
               />
             </TouchableOpacity>
           </View>
@@ -217,103 +217,103 @@ export default function App() {
 }
 
 const myScreen = {
-  width: Dimensions.get("window").width,
-  height: Dimensions.get("window").height,
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height,
   widthRatio: 1,
-  heightRatio: 1,
+  heightRatio: 1
 };
 
 const styles = StyleSheet.create({
   bottomMainView: {
-    backgroundColor: "#EAF0F2",
-    width: "100%",
+    backgroundColor: '#EAF0F2',
+    width: '100%'
   },
   container: {
-    backgroundColor: "#1C333E",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flexDirection: "column",
+    backgroundColor: '#1C333E',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
 
     width: myScreen.width * myScreen.widthRatio,
-    height: myScreen.height * myScreen.heightRatio,
+    height: myScreen.height * myScreen.heightRatio
   },
   container2: {},
   metaContainer: {
-    backgroundColor: "#EAF0F2",
+    backgroundColor: '#EAF0F2',
     borderTopLeftRadius: 70,
     borderTopRightRadius: 70,
-    height: "85%",
+    height: '85%'
   },
   generalText: {
-    fontFamily: "K2D_600SemiBold",
-    color: "#1C333E",
+    fontFamily: 'K2D_600SemiBold',
+    color: '#1C333E'
   },
   italicText: {
-    fontFamily: "K2D_500Medium_Italic",
+    fontFamily: 'K2D_500Medium_Italic'
   },
   infoContainerContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: 30,
-    top: 40,
+    top: 40
   },
   infoIcon: {
     height: 40,
     width: 40,
 
-    zIndex: 3,
+    zIndex: 3
   },
   searchBarContainer: {
-    backgroundColor: "#F3F6F7",
-    position: "absolute",
-    width: "80%",
-    height: "8%",
+    backgroundColor: '#F3F6F7',
+    position: 'absolute',
+    width: '80%',
+    height: '8%',
     zIndex: 1,
     elevation: 10,
-    right: "10%",
-    bottom: "15%",
+    right: '10%',
+    bottom: '15%',
     borderRadius: 100,
 
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   searchBarIcon: {
     marginLeft: 14,
-    width: "10%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "yellow",
+    width: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'yellow'
   },
   searchBarIconImg: {
-    height: "70%",
+    height: '70%'
   },
   searchBarTextContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    flexDirection: "row",
-    height: "100%",
+    flexDirection: 'row',
+    height: '100%'
   },
   searchBarText: {
     marginLeft: 10,
-    alignItems: "center",
-    fontSize: 20,
+    alignItems: 'center',
+    fontSize: 20
   },
   splash: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#A8EBF4",
-    resizeMode: "cover",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#A8EBF4',
+    resizeMode: 'cover'
   },
   topMainView: {
-    width: "100%",
-    position: "absolute",
+    width: '100%',
+    position: 'absolute',
     top: -60,
-    zIndex: 1,
+    zIndex: 1
   },
   topMainViewText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 15,
-    color: "#9FBBC5",
-  },
+    color: '#9FBBC5'
+  }
 });
 
 //TODO: have a default region if the user doesn't give permission
