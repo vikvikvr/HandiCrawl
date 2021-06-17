@@ -1,5 +1,7 @@
 
 //Fake DB before Firestore
+//This SUCKS!!!!!
+😂
 export default db = [
   {
     _id: "60c3234d36ac69e8941637b0",
@@ -10,6 +12,7 @@ export default db = [
     description: 'entrance by the East Side - ramp available',
     score: 0,
   },
+  //This is another comment
   {
     _id: "60c3234d226e1bda5b481c83",
     placeName: 'Ion Campineanu 29 bloc 6 Sc.1',
