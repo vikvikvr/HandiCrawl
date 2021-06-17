@@ -6,7 +6,8 @@
         "ios": "expo start --ios",
         "web": "expo start --web",
         "eject": "expo eject",
-        "lint": "eslint"
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@expo-google-fonts/dev": "^0.1.0",
