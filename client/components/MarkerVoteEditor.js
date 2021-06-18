@@ -6,7 +6,7 @@ import thumbUpIcon from "../assets/activeThumbsUp.png";
 import thumbDownIcon from "../assets/thumbsup.png";
 const iconDimension = 50;
 
-export default function ThumbComponent({ currentCallout }) {
+export default function MarkerVoteEditor({ currentCallout }) {
   const [up, setUp] = useState(false);
   const [down, setDown] = useState(false);
   const [score, setScore] = useState(currentCallout.score);

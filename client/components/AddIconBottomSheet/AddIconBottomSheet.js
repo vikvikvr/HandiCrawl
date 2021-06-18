@@ -1,6 +1,3 @@
-//failed attempt at modularity. By doing this the bottom sheets don't animate properly
-//so remove it unless you manage to keep the sliding of the
-//bottom sheets.
 import { BottomSheet } from "react-native-btr";
 import React, { useState, useEffect } from "react";
 import {
@@ -15,97 +12,79 @@ import {
 import * as Location from "expo-location";
 import { renderIcon, renderTitle, allIcons } from "../services/iconFactory";
 import { postNewCoord } from "../services/apiServices";
+import { NewMarkerIcon } from "./NewMarkerIcon";
+import { SheetHeader } from "./SheetHeader";
+// import AddDetailsBottomSheet from './AddDetailsBottomSheet';
 
-// *************************************************
-// ******* NOT CALLED ANYWHERE RIGHT NOW ***********
-// *************************************************
-
-export default function AddDetailsBottomSheet({
-  detailsBottomSheetVisible,
-  selectedIconString,
-  placeName,
-  description,
+export default function AddIconBottomSheet({
   iconEvent,
+  bottomSheetVisible,
   setBottomSheetVisible,
-  coords,
   setCoords,
-  setDetailsBottomSheetVisible,
+  coords,
 }) {
-  return (
-    <BottomSheet
-      visible={detailsBottomSheetVisible}
-      onBackButtonPress={() => setDetailsBottomSheetVisible(false)}
-      onBackdropPress={() => setDetailsBottomSheetVisible(false)}
-      <View style={styles.bottomAddIconView}>
-        <View style={styles.addIconImgContainer}>
-          <Image
-            source={renderIcon(selectedIconString)}
-            resizeMode="contain"
-            style={styles.addIconImg}
-          />
-        </View>
-        <Text style={[styles.generalText, styles.iconTitleText]}>
-          {renderTitle(selectedIconString)}
-        </Text>
-        <View style={styles.locationContainer}>
-          <Text style={[styles.generalText, styles.propertyText]}>
-            Address detected. Feel free to modify it =)
-          </Text>
-          <View style={styles.editContainer}>
-            <TextInput
-              onChangeText={(text) => onChangePlaceName(text)}
-              value={placeName}
-              style={[
-                styles.generalText,
-                styles.iconText,
-                styles.placeNameText,
-              ]}
-            />
-          </View>
-        </View>
-        <View style={styles.locationContainer}>
-          <Text style={[styles.generalText, styles.propertyText]}>
-            Provide some details to help even more =)
-          </Text>
-          <View style={[styles.editContainer, styles.descriptionContainer]}>
-            <TextInput
-              multiline={true}
-              onChangeText={(text) => onChangeDescription(text)}
-              value={description}
-              style={[
-                styles.generalText,
-                styles.iconText,
-                styles.descriptionText,
-              ]}
-            />
-          </View>
-        </View>
+  const [detailsBottomSheetVisible, setDetailsBottomSheetVisible] =
+    useState(false);
+  const [placeName, setChangePlaceName] = useState("location name");
+  const [description, onChangeDescription] = useState("");
+  const [selectedIconString, setSelectedIconString] = useState("");
+  const currentWidth = useWindowDimensions().width;
+  const paddingPercent = 5;
+  const effectivePadding = Math.floor((paddingPercent * currentWidth) / 100);
 
-        <TouchableOpacity
-          style={[styles.button]}
-          onPress={() => {
-            const newCoordinate = {
-              placeName: placeName,
-              icon: selectedIconString,
-              latitude: iconEvent.coordinate.latitude,
-              longitude: iconEvent.coordinate.longitude,
-              description: description === "" ? "" : description,
-              score: 0,
-            };
-            setCoords([...coords, newCoordinate]);
-            postNewCoord(newCoordinate);
-            setBottomSheetVisible(false);
-            setDetailsBottomSheetVisible(false);
-          }}
-        >
-          <Text style={[styles.generalText, styles.textStyle]}>Send</Text>
-        </TouchableOpacity>
-      </View>
-    </BottomSheet>
+  function hasNumber(string) {
+    return /\d/.test(string);
+  }
+
+  function handleNewMarkerPress(iconString) {
+    setSelectedIconString(iconString);
+    toggleBottomSheet();
+  }
+
+  // Modal is now another Bottom sheet. Need to fix the name
+  // When you activate toggle modal you enter the 2nd bottom sheet which
+  //is used to give a description about an icon
+  async function toggleBottomSheet() {
+    if (!detailsBottomSheetVisible) {
+      //Get the street address thanks to reverseGeoCode
+      const location = await Location.reverseGeocodeAsync({
+        latitude: iconEvent.coordinate.latitude,
+        longitude: iconEvent.coordinate.longitude,
+      });
+      const { name, street } = location[0];
+      let locationName = name;
+      if (hasNumber(name)) {
+        locationName = street + " " + name;
+      }
+      //if the location is a named place (like 'House of Parliament') render this
+      //otherwise render street + number
+      setChangePlaceName(locationName);
+      console.log("getting here");
+      setDetailsBottomSheetVisible(true);
+    } else {
+      setDetailsBottomSheetVisible(false);
+    }
+  }
+
+  return (
+    <View>
+      <SelectIconSheet />
+      <AddIconBottomSheet />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  sheet: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
   addIconImg: {
     width: 60,
     height: 60,
@@ -176,22 +155,14 @@ const styles = StyleSheet.create({
     flex: 3,
     flexWrap: "wrap",
     flexDirection: "row",
-    // backgroundColor: "blue",
+    paddingLeft: effectivePadding,
+    paddingRight: effectivePadding,
     marginTop: 20,
-
     justifyContent: "center",
     alignItems: "center",
     width: 400,
   },
-  closeIconContainer: {
-    position: "absolute",
-    right: "5%",
-    top: "5%",
-  },
-  closeIconImg: {
-    width: 20,
-    height: 20,
-  },
+
   descriptionContainer: {
     height: 60,
   },

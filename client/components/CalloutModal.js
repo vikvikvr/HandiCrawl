@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import { renderIcon, renderTitle } from "../services/iconFactory";
 import { deleteCoord } from "../services/apiServices";
-import ThumbComponent from "./ThumbComponent";
+import MarkerVoteEditor from "./MarkerVoteEditor";
 const iconDimension = 50;
 
 export default function CalloutModal({
@@ -28,71 +28,93 @@ export default function CalloutModal({
       visible={markerDetailsModalVisible}
       onRequestClose={() => setMarkerDetailsModalVisible(false)}
       animationType="slide"
-      // style={{  margin: 0, alignItems: 'center', justifyContent: 'center' }}
     >
       <View style={styles.bubble}>
-        <View style={styles.iconImgContainer}>
-          <Image
-            source={renderIcon(currentCallout.icon)}
-            style={styles.generalIcon}
-          />
-        </View>
-
-        <ThumbComponent currentCallout={currentCallout} />
-
-        <View style={styles.iconTitle}>
-          <Text style={[styles.generalText, styles.iconTitleText]}>
-            {renderTitle(currentCallout.icon)}
-          </Text>
-        </View>
-        {/* 
-        trash and edit icon  below. if you press on 
-        trash: delete coordinate (not reversible)
-        edit: open the edit modal
-        */}
-        <View style={styles.editBubble}>
-          <TouchableOpacity
-            onPress={() => {
-              deleteCoord(currentCallout);
-              setCoords((prev) => {
-                return prev.filter((coord) => {
-                  return coord.id !== currentCallout.id;
-                });
-              });
-              setMarkerDetailsModalVisible(false);
-            }}
-          >
-            <Image
-              source={require("../assets/trash.png")}
-              style={[styles.trashIcon]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              toggleCalloutToEdit();
-            }}
-          >
-            <Image
-              source={require("../assets/edit.png")}
-              style={[styles.trashIcon, styles.editIcon]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.middleBubble}>
-          <View style={styles.locationContainer}>
-            <Text style={[styles.generalText, styles.placeNameText]}>
-              {currentCallout.placeName}
-            </Text>
-            <Text style={[styles.generalText, styles.descriptionText]}>
-              {currentCallout.description}
-            </Text>
-          </View>
-        </View>
+        <CalloutHeader />
+        <CalloutBody />
       </View>
     </Modal>
+  );
+}
+
+function CalloutHeader() {
+  return (
+    <View>
+      <Icon />
+      <MarkerVoteEditor currentCallout={currentCallout} />
+      <View style={styles.editBubble}>
+        <TrashButton />
+        <EditButton />
+      </View>
+    </View>
+  );
+}
+
+function CalloutBody() {
+  return (
+    <View style={styles.middleBubble}>
+      <View style={styles.locationContainer}>
+        <Text style={[styles.generalText, styles.placeNameText]}>
+          {currentCallout.placeName}
+        </Text>
+        <Text style={[styles.generalText, styles.descriptionText]}>
+          {currentCallout.description}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function Icon() {
+  return (
+    <View>
+      <View style={styles.iconImgContainer}>
+        <Image
+          source={renderIcon(currentCallout.icon)}
+          style={styles.generalIcon}
+        />
+      </View>
+      <View style={styles.iconTitle}>
+        <Text style={[styles.generalText, styles.iconTitleText]}>
+          {renderTitle(currentCallout.icon)}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function TrashButton() {
+  function handlePress(prev) {
+    deleteCoord(currentCallout);
+    setCoords((prev) => {
+      // remove coord
+      return prev.filter((coord) => {
+        return coord.id !== currentCallout.id;
+      });
+    });
+    setMarkerDetailsModalVisible(false);
+  }
+
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <Image
+        source={require("../assets/trash.png")}
+        style={[styles.trashIcon]}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+  );
+}
+
+function EditButton() {
+  return (
+    <TouchableOpacity onPress={toggleCalloutToEdit}>
+      <Image
+        source={require("../assets/edit.png")}
+        style={[styles.trashIcon, styles.editIcon]}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   );
 }
 

@@ -5,19 +5,6 @@ import React from "react";
 import { renderIcon, allIcons, renderDescr } from "../services/iconFactory";
 
 export default function InfoModal({ infoModalVisible, setInfoModalVisible }) {
-  const InfoContainerView = allIcons.map((icon) => {
-    return (
-      <View key={icon} style={styles.infoContainer}>
-        <Image
-          style={styles.iconImg}
-          source={renderIcon(icon)}
-          resizeMode="contain"
-        />
-        <Text style={[styles.generalText]}>{renderDescr(icon)}</Text>
-      </View>
-    );
-  });
-
   return (
     <Modal
       animationType="slide"
@@ -25,10 +12,27 @@ export default function InfoModal({ infoModalVisible, setInfoModalVisible }) {
       visible={infoModalVisible}
       onRequestClose={() => setInfoModalVisible(false)}
     >
-      <View style={styles.infoModalView}>
-        <InfoContainerView />
-      </View>
+      <IconsList />
     </Modal>
+  );
+}
+
+function IconsList() {
+  return (
+    <View style={styles.infoModalView}>
+      {allIcons.map((icon) => {
+        return (
+          <View key={icon} style={styles.infoContainer}>
+            <Image
+              style={styles.iconImg}
+              source={renderIcon(icon)}
+              resizeMode="contain"
+            />
+            <Text style={[styles.generalText]}>{renderDescr(icon)}</Text>
+          </View>
+        );
+      })}
+    </View>
   );
 }
 

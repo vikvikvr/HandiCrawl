@@ -49,115 +49,125 @@ export default function EditModal({
       animationType="slide"
     >
       <View style={styles.bubble}>
-        <Text style={[styles.generalText, styles.titleText]}>
-          Edit Handimarker
-        </Text>
-        <Text style={[styles.generalText, styles.propertyText]}>
-          Edit icon...
-        </Text>
-
-        {/* container to modify the icon pic */}
-        <View style={styles.editContainer}>
-          <View style={styles.iconImgContainer}>
-            <Image
-              source={
-                temporaryHandiMarker
-                  ? renderIcon(temporaryHandiMarker.icon)
-                  : renderIcon(currentCallout.icon)
-              }
-              style={styles.generalIcon}
-            />
-            <Text style={styles.iconText}>
-              {renderTitle(
-                temporaryHandiMarker
-                  ? temporaryHandiMarker.icon
-                  : currentCallout.icon
-              )}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={() => setIconEditModalScreen(true)}>
-            <Image
-              source={require("../assets/edit.png")}
-              style={[styles.trashIcon, styles.editIcon]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <Text style={[styles.generalText, styles.propertyText]}>
-          Edit location...
-        </Text>
-
-        {/* container to modify the location name */}
-        <View style={styles.editContainer}>
-          <TextInput
-            style={[styles.generalText, styles.iconText, styles.placeNameText]}
-            onChangeText={(text) => {
-              console.log(text);
-              setTemporaryHandiMarker({
-                ...temporaryHandiMarker,
-                placeName: text,
-              });
-              console.log("newtemp", temporaryHandiMarker);
-            }}
-            onFocus={(whatisit) => console.log("in focus", whatisit)}
-          >
-            {temporaryHandiMarker
-              ? temporaryHandiMarker.placeName
-              : currentCallout.placeName}
-          </TextInput>
-        </View>
-
-        <Text style={[styles.generalText, styles.propertyText]}>
-          Edit description...
-        </Text>
-
-        {/* container to modify the description text */}
-        <View style={[styles.editContainer, styles.descriptionContainer]}>
-          <TextInput
-            multiline={true}
-            style={[styles.generalText, styles.iconText, styles.placeNameText]}
-            onChangeText={(text) => {
-              console.log(text);
-              setTemporaryHandiMarker({
-                ...temporaryHandiMarker,
-                description: text,
-              });
-            }}
-          >
-            {temporaryHandiMarker
-              ? temporaryHandiMarker.description
-              : currentCallout.description}
-          </TextInput>
-        </View>
-
-        {/* container for the send button. On press,
-          it updates the information for the marker */}
-        <View style={styles.sendButton}>
-          <TouchableOpacity
-            onPress={() => {
-              sendUpdateCoord(temporaryHandiMarker);
-              setCoords((prevCoords) => {
-                const newCoords = prevCoords.map((coordItem) => {
-                  if (coordItem.id === temporaryHandiMarker.id)
-                    return temporaryHandiMarker;
-                  else return coordItem;
-                });
-                return newCoords;
-              });
-              setTemporaryHandiMarker(null);
-              setMarkerDetailsModalVisible(false);
-              setEditModalScreen(false);
-            }}
-          >
-            <Text style={[styles.generalText, styles.sendButtonUpdate]}>
-              Send Update
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <Title />
+        <GeneralText>Edit icon...</GeneralText>
+        <EditIconRow />
+        <GeneralText>Edit location...</GeneralText>
+        <EditLocationNameInput />
+        <GeneralText>Edit description...</GeneralText>
+        <EditDescriptionInput />
+        <SendButton />
       </View>
     </Modal>
   );
+}
+
+function EditIconRow() {
+  const iconName = temporaryHandiMarker
+    ? temporaryHandiMarker.icon
+    : currentCallout.icon;
+
+  return (
+    <View style={styles.editContainer}>
+      <View style={styles.iconImgContainer}>
+        <Image source={renderIcon(iconName)} style={styles.generalIcon} />
+        <Text style={styles.iconText}>{renderTitle(iconName)}</Text>
+      </View>
+      <TouchableOpacity onPress={() => setIconEditModalScreen(true)}>
+        <Image
+          source={require("../assets/edit.png")}
+          style={[styles.trashIcon, styles.editIcon]}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function EditLocationNameInput() {
+  function handleTextChange(text) {
+    setTemporaryHandiMarker({
+      ...temporaryHandiMarker,
+      placeName: text,
+    });
+  }
+
+  const inputText = temporaryHandiMarker
+    ? temporaryHandiMarker.placeName
+    : currentCallout.placeName;
+
+  return (
+    <View style={styles.editContainer}>
+      <TextInput
+        style={[styles.generalText, styles.iconText, styles.placeNameText]}
+        onChangeText={handleTextChange}
+        onFocus={(whatisit) => console.log("in focus", whatisit)}
+      >
+        {inputText}
+      </TextInput>
+    </View>
+  );
+}
+
+function EditDescriptionInput() {
+  function handleTextChange(text) {
+    setTemporaryHandiMarker({
+      ...temporaryHandiMarker,
+      description: text,
+    });
+  }
+
+  const inputText = temporaryHandiMarker
+    ? temporaryHandiMarker.description
+    : currentCallout.description;
+
+  return (
+    <View style={[styles.editContainer, styles.descriptionContainer]}>
+      <TextInput
+        multiline={true}
+        style={[styles.generalText, styles.iconText, styles.placeNameText]}
+        onChangeText={handleTextChange}
+      >
+        {inputText}
+      </TextInput>
+    </View>
+  );
+}
+
+function SendButton() {
+  function handlePress() {
+    sendUpdateCoord(temporaryHandiMarker);
+    setCoords(makeNewCoords);
+    setTemporaryHandiMarker(null);
+    setMarkerDetailsModalVisible(false);
+    setEditModalScreen(false);
+  }
+
+  function makeNewCoords(prevCoords) {
+    const newCoords = prevCoords.map((coordItem) => {
+      if (coordItem.id === temporaryHandiMarker.id) return temporaryHandiMarker;
+      else return coordItem;
+    });
+    return newCoords;
+  }
+
+  return (
+    <View style={styles.sendButton}>
+      <TouchableOpacity onPress={handlePress}>
+        <Text style={[styles.generalText, styles.sendButtonUpdate]}>
+          Send Update
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function GeneralText({ children }) {
+  return <Text style={[styles.generalText, styles.titleText]}>{children}</Text>;
+}
+
+function Title() {
+  return <Text style={[styles.generalText, styles.titleText]}></Text>;
 }
 
 const styles = StyleSheet.create({

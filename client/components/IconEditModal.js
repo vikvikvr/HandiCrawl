@@ -16,9 +16,7 @@ export default function IconModal({
   temporaryHandiMarker,
   setIconEditModalScreen,
 }) {
-  //render each icon from the icon factory
-
-  function handlePress() {
+  function handlePress(iconString) {
     setTemporaryHandiMarker((prev) => {
       return {
         ...prev,
@@ -26,29 +24,7 @@ export default function IconModal({
       };
     });
     setIconEditModalScreen(false);
-    console.log("modified, ", temporaryHandiMarker);
   }
-
-  const iconButtons = allIcons.map((iconString) => {
-    return (
-      <View style={styles.iconImgContainer} key={iconString}>
-        <TouchableOpacity
-          key={iconString}
-          style={styles.handiMarkerContainer}
-          onPress={handlePress}
-        >
-          <View style={styles.markerImgWrapper}>
-            <Image
-              source={renderIcon(iconString)}
-              resizeMode="contain"
-              style={styles.iconImg}
-            />
-          </View>
-          <Text style={styles.generalText}>{renderTitle(iconString)}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  });
 
   return (
     <Modal
@@ -61,9 +37,46 @@ export default function IconModal({
         <Text style={[styles.generalText, styles.titleText]}>
           Choose your icon
         </Text>
-        <View style={styles.iconButtons}>{iconButtons}</View>
+        <IconsList onPress={handlePress} />
       </View>
     </Modal>
+  );
+}
+
+function IconsList({ onPress }) {
+  return (
+    <View style={styles.iconButtons}>
+      {allIcons.map((iconString) => {
+        return (
+          <IconButton
+            iconString={iconString}
+            onPress={onPress}
+            key={iconString}
+          />
+        );
+      })}
+    </View>
+  );
+}
+
+function IconButton({ iconString, onPress }) {
+  return (
+    <View style={styles.iconImgContainer} key={iconString}>
+      <TouchableOpacity
+        key={iconString}
+        style={styles.handiMarkerContainer}
+        onPress={() => onPress(iconString))}
+      >
+        <View style={styles.markerImgWrapper}>
+          <Image
+            source={renderIcon(iconString)}
+            resizeMode="contain"
+            style={styles.iconImg}
+          />
+        </View>
+        <Text style={styles.generalText}>{renderTitle(iconString)}</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
