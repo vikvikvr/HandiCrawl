@@ -2,14 +2,16 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { Text, View, Image, TextInput, StyleSheet } from "react-native";
-import MapRender from "./containers/MapRender";
+import { MapRender } from "./containers/MapRender";
 import * as Location from "expo-location";
 import { getMarkers, getBounds } from "./services/apiServices";
 import infoIcon from "./assets/infoIcon.png";
 import { useAppFonts, styles } from "./App.styles.js";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import InfoModal from "./components/InfoModal";
 import { SearchBar } from "./components/SearchBar";
+import { ModalHandler } from "./containers/ModalHandler";
+import { useSubject } from "./hooks/useSubject";
+import { currentModal$ } from "./services/modalService";
 
 export default function App() {
   // state that holds the current center position the user is on
@@ -23,20 +25,17 @@ export default function App() {
 
   // very important state that will keep the splashscreen as long as we are fetching
   const [appIsReady, setAppIsReady] = useState(false);
-  // the user location and the first set of data from database
-  const [infoModalVisible, setInfoModalVisible] = useState(false); // state that will render the information modal if set to true
   // holds the threshold of altitude above which the icons should stop appearing on the map
   const maxZoom = 0.022;
 
   //load custom fonts for the app
   // useAppFonts();
 
-  // first time loading, get the first area to populate based on user location
   useEffect(prepare, []);
-
-  //When the user changes region on the map, call the function that handles what to do
   useEffect(updateMapElements, [region]);
+  useEffect(handleCurrentIconChange, [currentIconSelected]);
 
+  // get the first area to populate based on user location
   function prepare() {
     (async function () {
       try {
@@ -74,16 +73,19 @@ export default function App() {
     }
   }
 
-  /*
-    The function updaMapElements() below is called everytime the region changes, meaning everytime
-    the user interacts with the map(go to another location, zoom out), 
-  
-    It will :
-    -check if we're still within the boundaries of the current area whose icons have already been retrieved.
-    -check if the zoom level is above a threshold
-    - if any of those checks pass, we don't do anything
-    - otherwise we call the database and populate the new area
-    */
+  function handleCurrentIconChange() {
+    if (!currentIconSelected) return;
+    const iconSelected = coords.find((coord) => {
+      return (
+        coord.latitude === currentIconSelected.latitude &&
+        coord.longitude === currentIconSelected.longitude
+      );
+    });
+    setCurrentCallout(iconSelected);
+  }
+
+  // when user moves the map region on the map, call the function that handles what to do
+  // we might need to get new markers
   async function updateMapElements() {
     if (!region) return;
     //At launch, the map loads coordinate around an area beyong the simple screen view. this below checks if we're
@@ -92,10 +94,9 @@ export default function App() {
       region.latitude > storedBounds.minLat &&
       region.latitude < storedBounds.maxLat &&
       region.longitude > storedBounds.minLong &&
-      region.longitude < storedBounds.maxLong &&
-      appIsReady;
+      region.longitude < storedBounds.maxLong;
 
-    if (isStillInBounds) {
+    if (isStillInBounds && appIsReady) {
       console.log("not sending request");
       setStillInBounds(true);
       return;
@@ -123,15 +124,7 @@ export default function App() {
     <View onLayout={SplashScreen.hideAsync}>
       <View style={styles.container}>
         <View style={[styles.metaContainer]}>
-          <View style={styles.topMainView}>
-            <Text style={[styles.generalText, styles.topMainViewText]}>
-              Click on a marker to get and edit information
-            </Text>
-            <Text style={[styles.generalText, styles.topMainViewText]}>
-              Press on a location to add a marker
-            </Text>
-          </View>
-          {/* <SearchBar /> */}
+          <AppHeader />
           <MapRender
             region={region}
             markers={markers}
@@ -140,33 +133,25 @@ export default function App() {
             maxZoom={maxZoom}
             stillInBounds={stillInBounds}
           />
+          <SearchBar />
           <TopRightInfoIcon />
         </View>
       </View>
-
-      {/* render the info Modal only when infoModalVisible is true. That is, when the icon above is pressed */}
-      {infoModalVisible ? (
-        <View>
-          <InfoModal
-            infoModalVisible={infoModalVisible}
-            setInfoModalVisible={setInfoModalVisible}
-          />
-        </View>
-      ) : null}
-      <StatusBar style="light" hidden={false} />
+      <ModalHandler />
+      <StatusBar style="light" />
     </View>
   );
 }
 
-function TopRightInfoIcon() {
+function AppHeader() {
   return (
-    <View style={styles.infoContainerContainer}>
-      <TouchableOpacity
-        onPress={() => setInfoModalVisible(true)}
-        style={styles.infoContainer}
-      >
-        <Image style={styles.infoIcon} resizeMode="contain" source={infoIcon} />
-      </TouchableOpacity>
+    <View style={styles.topMainView}>
+      <Text style={[styles.generalText, styles.topMainViewText]}>
+        Click on a marker to get and edit information
+      </Text>
+      <Text style={[styles.generalText, styles.topMainViewText]}>
+        Press on a location to add a marker
+      </Text>
     </View>
   );
 }

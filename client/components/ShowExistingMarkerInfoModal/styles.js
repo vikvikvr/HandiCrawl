@@ -1,58 +1,8 @@
-//the component that renders the score and upVotes/Downvotes when clicking
-//on an existing marker
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-import thumbUpIcon from "../assets/activeThumbsUp.png";
-import thumbDownIcon from "../assets/thumbsup.png";
+import { StyleSheet } from "react-native";
+
 const iconDimension = 50;
 
-export default function MarkerVoteEditor({ currentCallout }) {
-  const [up, setUp] = useState(false);
-  const [down, setDown] = useState(false);
-  const [score, setScore] = useState(currentCallout.score);
-  useEffect(handleScoreChange, [up, down]);
-
-  function handleScoreChange() {
-    const entranceScore = currentCallout.score;
-    if (up) setScore(entranceScore + 1);
-    if (down) setScore(entranceScore - 1);
-    if (!up && !down) setScore(entranceScore);
-  }
-
-  function voteIcon(voteDirection) {
-    if (voteDirection === "up") {
-      setUp(!up);
-      if (down) setDown(false);
-    } else {
-      setDown(!down);
-      if (up) setUp(false);
-    }
-  }
-
-  const imageSource = up ? thumbUpIcon : thumbDownIcon;
-
-  return (
-    <View style={styles.thumbsContainer}>
-      <TouchableOpacity onPress={() => voteIcon("up")}>
-        <Image
-          source={imageSource}
-          style={[styles.thumbsIcon]}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-      <Text style={[styles.generalText, styles.scoreText]}>{score}</Text>
-      <TouchableOpacity onPress={() => voteIcon("down")}>
-        <Image
-          source={imageSource}
-          style={[styles.thumbsIcon]}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   bubble: {
     flexDirection: "column",
     borderRadius: 20,
@@ -62,7 +12,6 @@ const styles = StyleSheet.create({
     bottom: "35%",
     backgroundColor: "#EAF0F2",
     paddingTop: "4%",
-    borderRadius: 20,
     paddingLeft: "1%",
     paddingRight: "1%",
     alignSelf: "center",
@@ -93,6 +42,16 @@ const styles = StyleSheet.create({
     top: 24,
     right: 10,
     alignSelf: "flex-end",
+  },
+  editIcon: {
+    width: iconDimension - 30,
+    height: iconDimension - 20,
+    bottom: "1%",
+    marginRight: "2%",
+  },
+  generalIcon: {
+    width: iconDimension,
+    height: iconDimension,
   },
   generalText: {
     fontFamily: "K2D_600SemiBold",

@@ -1,13 +1,12 @@
-import assets from "../assets/warning.png";
+import warning from "../assets/warning.png";
 import easyAccess from "../assets/easyAccess.png";
 import elevator from "../assets/elevator.png";
 import ramp from "../assets/ramp.png";
 import stairs from "../assets/stairs.png";
-import parkingSpot from "../assets/parkingSpot.png";
+import parking from "../assets/parkingSpot.png";
 import badMetro from "../assets/badMetro.png";
 import goodMetro from "../assets/goodMetro.png";
-import codepng from "../assets/codepng.png";
-import smilou from "../assets/smilou.png";
+import codeworks from "../assets/codepng.png";
 
 export const allIcons = [
   "ramp",
@@ -21,16 +20,16 @@ export const allIcons = [
   "codeworks",
 ];
 
-export function renderIcon(iconId) {
-  return icons[iconId].icon;
+export function renderIcon(iconName = "") {
+  return icons[iconName].icon;
 }
 
-export function renderTitle(string) {
-  return icons[iconId].title;
+export function renderTitle(iconName = "") {
+  return icons[iconName].title;
 }
 
-export function renderDescr(string) {
-  return icons[iconId].description;
+export function renderDescr(iconName = "") {
+  return icons[iconName].description;
 }
 
 const icons = {
