@@ -1,6 +1,6 @@
 import db from "../fakedb";
 import { getDistance, getBoundsOfDistance } from "geolib";
-const regionToLoad = 3000; //max distance from the current region to load icons from
+const maxDistance = 3000; //max distance from the current region to load icons from
 
 import dbh from "./databaseConnection";
 
@@ -8,7 +8,7 @@ import dbh from "./databaseConnection";
 export function getBounds(region) {
   const bounds = getBoundsOfDistance(
     { latitude: region.latitude, longitude: region.longitude },
-    regionToLoad
+    maxDistance
   );
   const formattedBounds = {
     minLat: bounds[0].latitude,
@@ -20,7 +20,7 @@ export function getBounds(region) {
 }
 
 //fetches the appropriate data from the database
-export async function getCoords(region) {
+export async function getMarkers(region) {
   if (!region) return;
 
   console.log("fetching initiated", region);

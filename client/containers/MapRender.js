@@ -16,7 +16,6 @@ export default function MapRender({
   coords,
   setCoords,
   maxZoom,
-  setMapLoaded,
   stillInBonds,
 }) {
   const [iconEvent, setIconEvent] = useState({}); //will hold coordinates of where the user longpressed (to add a new marker)
@@ -71,14 +70,16 @@ export default function MapRender({
   //populate region will render the actual icon for each coordinate loaded in the area
   //by looping through the coords array
   let populateRegion;
-  if (
+
+  const shouldRenderNewMarkers =
     coords.length !== 0 &&
     coords !== undefined &&
     region.latitudeDelta < maxZoom &&
-    !stillInBonds
-  ) {
+    !stillInBonds;
+
+  if (shouldRenderNewMarkers) {
     //create a marker for each element in the coords array
-    populateRegion = coords.map((coordItem) => {
+    markersToRender = coords.map((coordItem) => {
       console.log("firing populate region");
       return (
         <View
@@ -123,7 +124,7 @@ export default function MapRender({
         </View>
       );
     });
-  } else populateRegion = null;
+  } else markersToRender = null;
 
   //the parent holds the modal states (hence the toggles below) but technically
   //you could have a hierarchy like this
@@ -155,7 +156,6 @@ export default function MapRender({
         }}
         loadingEnabled={true}
         provider={MapView.PROVIDER_GOOGLE}
-        onMapReady={() => setMapLoaded(true)}
         customMapStyle={customStyle}
         showsUserLocation={true}
         showsMyLocationButton={true}
@@ -170,7 +170,7 @@ export default function MapRender({
           }
         }}
       >
-        {populateRegion}
+        {markersToRender}
       </MapView>
 
       {bottomSheetVisible ? (

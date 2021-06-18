@@ -23,7 +23,7 @@ export default function AddIconBottomSheet({
 }) {
   const [detailsBottomSheetVisible, setDetailsBottomSheetVisible] =
     useState(false);
-  const [placeName, onChangePlaceName] = useState("location name");
+  const [placeName, setChangePlaceName] = useState("location name");
   const [description, onChangeDescription] = useState("");
   const [selectedIconString, setSelectedIconString] = useState("");
   const currentWidth = useWindowDimensions().width;
@@ -46,7 +46,7 @@ export default function AddIconBottomSheet({
           style={styles.handiMarkerContainer}
           onPress={() => {
             setSelectedIconString(iconString);
-            toggleModal();
+            toggleBottomSheet();
           }}
         >
           <View style={styles.markerImgWrapper}>
@@ -69,22 +69,21 @@ export default function AddIconBottomSheet({
   // Modal is now another Bottom sheet. Need to fix the name
   // When you activate toggle modal you enter the 2nd bottom sheet which
   //is used to give a description about an icon
-  async function toggleModal() {
+  async function toggleBottomSheet() {
     if (!detailsBottomSheetVisible) {
       //Get the street address thanks to reverseGeoCode
       const location = await Location.reverseGeocodeAsync({
         latitude: iconEvent.coordinate.latitude,
         longitude: iconEvent.coordinate.longitude,
       });
-      onChangePlaceName(
-        //if the location is a named place (like 'House of Parliament') render this
-        //otherwise render street + number
-        `${
-          hasNumber(location[0].name)
-            ? location[0].street + " " + location[0].name
-            : location[0].name
-        }`
-      );
+      const { name, street } = location[0];
+      let locationName = name;
+      if (hasNumber(name)) {
+        locationName = street + " " + name;
+      }
+      //if the location is a named place (like 'House of Parliament') render this
+      //otherwise render street + number
+      setChangePlaceName(locationName);
       console.log("getting here");
       setDetailsBottomSheetVisible(true);
     } else {
@@ -157,14 +156,14 @@ export default function AddIconBottomSheet({
         setBottomSheetVisible={setBottomSheetVisible}
         setCoords={setCoords}
         coords={coords}
-        toggleModal={toggleModal}
+        toggleBottomSheet={toggleBottomSheet}
         setDetailsBottomSheetVisible={setDetailsBottomSheetVisible}
       /> : null} */}
 
       <BottomSheet
         visible={detailsBottomSheetVisible}
-        onBackButtonPress={() => toggleModal()}
-        onBackdropPress={() => toggleModal()}
+        onBackButtonPress={() => toggleBottomSheet()}
+        onBackdropPress={() => toggleBottomSheet()}
       >
         <View style={styles.bottomAddIconView}>
           <View style={styles.addIconImgContainer}>
@@ -177,13 +176,14 @@ export default function AddIconBottomSheet({
           <Text style={[styles.generalText, styles.iconTitleText]}>
             {renderTitle(selectedIconString)}
           </Text>
+          {/* input place name */}
           <View style={styles.locationContainer}>
             <Text style={[styles.generalText, styles.propertyText]}>
               Address detected. Feel free to modify it =)
             </Text>
             <View style={styles.editContainer}>
               <TextInput
-                onChangeText={(text) => onChangePlaceName(text)}
+                onChangeText={(text) => setChangePlaceName(text)}
                 value={placeName}
                 style={[
                   styles.generalText,
@@ -193,6 +193,7 @@ export default function AddIconBottomSheet({
               />
             </View>
           </View>
+          {/* input place description */}
           <View style={styles.locationContainer}>
             <Text style={[styles.generalText, styles.propertyText]}>
               Provide some details to help even more =)
@@ -211,6 +212,7 @@ export default function AddIconBottomSheet({
             </View>
           </View>
 
+          {/* Send button */}
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => {

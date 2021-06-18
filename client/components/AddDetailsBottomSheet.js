@@ -16,6 +16,10 @@ import * as Location from "expo-location";
 import { renderIcon, renderTitle, allIcons } from "../services/iconFactory";
 import { postNewCoord } from "../services/apiServices";
 
+// *************************************************
+// ******* NOT CALLED ANYWHERE RIGHT NOW ***********
+// *************************************************
+
 export default function AddDetailsBottomSheet({
   detailsBottomSheetVisible,
   selectedIconString,

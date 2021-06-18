@@ -17,22 +17,25 @@ export default function IconModal({
   setIconEditModalScreen,
 }) {
   //render each icon from the icon factory
-  const iconButton = allIcons.map((iconString) => {
+
+  function handlePress() {
+    setTemporaryHandiMarker((prev) => {
+      return {
+        ...prev,
+        icon: iconString,
+      };
+    });
+    setIconEditModalScreen(false);
+    console.log("modified, ", temporaryHandiMarker);
+  }
+
+  const iconButtons = allIcons.map((iconString) => {
     return (
       <View style={styles.iconImgContainer} key={iconString}>
         <TouchableOpacity
           key={iconString}
           style={styles.handiMarkerContainer}
-          onPress={() => {
-            setTemporaryHandiMarker((prev) => {
-              return {
-                ...prev,
-                icon: iconString,
-              };
-            });
-            setIconEditModalScreen(false);
-            console.log("modified, ", temporaryHandiMarker);
-          }}
+          onPress={handlePress}
         >
           <View style={styles.markerImgWrapper}>
             <Image
@@ -58,7 +61,7 @@ export default function IconModal({
         <Text style={[styles.generalText, styles.titleText]}>
           Choose your icon
         </Text>
-        <View style={styles.iconButtons}>{iconButton}</View>
+        <View style={styles.iconButtons}>{iconButtons}</View>
       </View>
     </Modal>
   );

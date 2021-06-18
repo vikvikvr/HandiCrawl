@@ -5,7 +5,7 @@ import React from "react";
 import { renderIcon, allIcons, renderDescr } from "../services/iconFactory";
 
 export default function InfoModal({ infoModalVisible, setInfoModalVisible }) {
-  let infoContainerView = allIcons.map((icon) => {
+  const InfoContainerView = allIcons.map((icon) => {
     return (
       <View key={icon} style={styles.infoContainer}>
         <Image
@@ -25,7 +25,9 @@ export default function InfoModal({ infoModalVisible, setInfoModalVisible }) {
       visible={infoModalVisible}
       onRequestClose={() => setInfoModalVisible(false)}
     >
-      <View style={styles.infoModalView}>{infoContainerView}</View>
+      <View style={styles.infoModalView}>
+        <InfoContainerView />
+      </View>
     </Modal>
   );
 }

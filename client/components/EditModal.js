@@ -33,21 +33,20 @@ export default function EditModal({
   setCoords,
 }) {
   if (!currentCallout) return null;
+  useEffect(populateHandiMarker, []);
 
-  //on opening, copy the data in currentCallout to temporaryHandiMarker
-  useEffect(() => {
-    !temporaryHandiMarker ? setTemporaryHandiMarker(currentCallout) : null;
-  }, []);
-
-  // console.log("temp handi marker", temporaryHandiMarker);
+  function populateHandiMarker() {
+    if (!temporaryHandiMarker) {
+      setTemporaryHandiMarker(currentCallout);
+    }
+  }
 
   return (
     <Modal
       transparent={true}
       visible={editModalScreen}
-      onRequestClose={() => toggleCalloutToEdit()}
+      onRequestClose={toggleCalloutToEdit}
       animationType="slide"
-      // style={{  margin: 0, alignItems: 'center', justifyContent: 'center' }}
     >
       <View style={styles.bubble}>
         <Text style={[styles.generalText, styles.titleText]}>

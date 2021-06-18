@@ -2,69 +2,48 @@
 //on an existing marker
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
+import thumbUpIcon from "../assets/activeThumbsUp.png";
+import thumbDownIcon from "../assets/thumbsup.png";
 const iconDimension = 50;
 
 export default function ThumbComponent({ currentCallout }) {
   const [up, setUp] = useState(false);
   const [down, setDown] = useState(false);
   const [score, setScore] = useState(currentCallout.score);
+  useEffect(handleScoreChange, [up, down]);
 
-  const entranceScore = currentCallout.score;
-  useEffect(() => {
+  function handleScoreChange() {
+    const entranceScore = currentCallout.score;
     if (up) setScore(entranceScore + 1);
     if (down) setScore(entranceScore - 1);
     if (!up && !down) setScore(entranceScore);
-  }, [up, down]);
+  }
 
-  //when you click on upvote or downvote, function
-  //to deal with what to do. Didn't have time to impact it on the actual
-  //score yet.
-  function renderThumb(thumbString) {
-    switch (thumbString) {
-      case "up": {
-        setUp(!up);
-        if (down) setDown(false);
-        break;
-      }
-      case "down": {
-        setDown(!down);
-        if (up) setUp(false);
-        break;
-      }
-      default:
-        return;
+  function voteIcon(voteDirection) {
+    if (voteDirection === "up") {
+      setUp(!up);
+      if (down) setDown(false);
+    } else {
+      setDown(!down);
+      if (up) setUp(false);
     }
   }
 
+  const imageSource = up ? thumbUpIcon : thumbDownIcon;
+
   return (
     <View style={styles.thumbsContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          renderThumb("up");
-        }}
-      >
+      <TouchableOpacity onPress={() => voteIcon("up")}>
         <Image
-          source={
-            up
-              ? require("../assets/activeThumbsUp.png")
-              : require("../assets/thumbsup.png")
-          }
+          source={imageSource}
           style={[styles.thumbsIcon]}
           resizeMode="contain"
         />
       </TouchableOpacity>
       <Text style={[styles.generalText, styles.scoreText]}>{score}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          renderThumb("down");
-        }}
-      >
+      <TouchableOpacity onPress={() => voteIcon("down")}>
         <Image
-          source={
-            down
-              ? require("../assets/activeThumbsDown.png")
-              : require("../assets/thumbsdown.png")
-          }
+          source={imageSource}
           style={[styles.thumbsIcon]}
           resizeMode="contain"
         />
