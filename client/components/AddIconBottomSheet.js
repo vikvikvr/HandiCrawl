@@ -35,33 +35,6 @@ export default function AddIconBottomSheet({
     return /\d/.test(string);
   }
 
-  //map through all icons and render an icon inside the bottom sheet for each
-  //each icon is clickable, and on click, opens the second bottom sheet to add
-  //details before sending the post request to the db
-  const iconButton = allIcons.map((iconString) => {
-    return (
-      <View style={styles.iconImgContainer} key={iconString}>
-        <TouchableOpacity
-          key={iconString}
-          style={styles.handiMarkerContainer}
-          onPress={() => {
-            setSelectedIconString(iconString);
-            toggleBottomSheet();
-          }}
-        >
-          <View style={styles.markerImgWrapper}>
-            <Image
-              source={renderIcon(iconString)}
-              resizeMode="contain"
-              style={styles.iconImg}
-            />
-          </View>
-          <Text style={styles.generalText}>{renderTitle(iconString)}...</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  });
-
   useEffect(() => {
     console.log(placeName);
   }, [placeName]);
@@ -91,154 +64,187 @@ export default function AddIconBottomSheet({
     }
   }
 
-  // console.log("placeName", placeName);
-
   return (
     <View>
-      <BottomSheet
-        visible={bottomSheetVisible}
-        onBackButtonPress={() => setBottomSheetVisible(false)}
-        onBackdropPress={() => setBottomSheetVisible(false)}
-        style={{
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.32,
-          shadowRadius: 5.46,
+      <SelectIconSheet />
+      <EditIconInfoSheet />
+    </View>
+  );
+}
 
-          elevation: 9,
-        }}
+function EditIconInfoSheet() {
+  return (
+    <BottomSheet
+      visible={detailsBottomSheetVisible}
+      onBackButtonPress={() => toggleBottomSheet()}
+      onBackdropPress={() => toggleBottomSheet()}
+    >
+      <View style={styles.bottomAddIconView}>
+        <EditIconInfoHeader />
+        <EditPlaceNameInput />
+        <EditPlaceDescriptionInput />
+        <SendButton />
+      </View>
+    </BottomSheet>
+  );
+}
+
+function SelectIconSheet() {
+  return (
+    <BottomSheet
+      visible={bottomSheetVisible}
+      onBackButtonPress={() => setBottomSheetVisible(false)}
+      onBackdropPress={() => setBottomSheetVisible(false)}
+      style={styles.bottomSheet}
+    >
+      <View style={styles.bottomNavigationView}>
+        <SelectIconHeader />
+        <IconsList />
+      </View>
+    </BottomSheet>
+  );
+}
+
+function EditIconInfoHeader() {
+  return (
+    <View>
+      <View style={styles.addIconImgContainer}>
+        <Image
+          source={renderIcon(selectedIconString)}
+          resizeMode="contain"
+          style={styles.addIconImg}
+        />
+      </View>
+      <Text style={[styles.generalText, styles.iconTitleText]}>
+        {renderTitle(selectedIconString)}
+      </Text>
+    </View>
+  );
+}
+
+function EditPlaceNameInput() {
+  return (
+    <View style={styles.locationContainer}>
+      <Text style={[styles.generalText, styles.propertyText]}>
+        Address detected. Feel free to modify it =)
+      </Text>
+      <View style={styles.editContainer}>
+        <TextInput
+          onChangeText={(text) => setChangePlaceName(text)}
+          value={placeName}
+          style={[styles.generalText, styles.iconText, styles.placeNameText]}
+        />
+      </View>
+    </View>
+  );
+}
+
+function EditPlaceDescriptionInput() {
+  return (
+    <View style={styles.locationContainer}>
+      <Text style={[styles.generalText, styles.propertyText]}>
+        Provide some details to help even more =)
+      </Text>
+      <View style={[styles.editContainer, styles.descriptionContainer]}>
+        <TextInput
+          multiline={true}
+          onChangeText={(text) => onChangeDescription(text)}
+          value={description}
+          style={[styles.generalText, styles.iconText, styles.descriptionText]}
+        />
+      </View>
+    </View>
+  );
+}
+
+function SendButton() {
+  function handlePress() {
+    const newCoordinate = {
+      placeName: placeName,
+      icon: selectedIconString,
+      latitude: iconEvent.coordinate.latitude,
+      longitude: iconEvent.coordinate.longitude,
+      description: description === "" ? "" : description,
+      score: 0,
+    };
+    setCoords([...coords, newCoordinate]);
+    postNewCoord(newCoordinate);
+    setBottomSheetVisible(false);
+    setDetailsBottomSheetVisible(false);
+  }
+
+  return (
+    <TouchableOpacity style={[styles.button]} onPress={handlePress}>
+      <Text style={[styles.generalText, styles.textStyle]}>Send</Text>
+    </TouchableOpacity>
+  );
+}
+
+function SelectIconHeader() {
+  return (
+    <View>
+      <Text style={[styles.generalText, styles.header]}>Add a HandiMarker</Text>
+      <View style={styles.closeIconContainer}>
+        <TouchableOpacity onPress={() => setBottomSheetVisible(false)}>
+          <Image
+            source={require("../assets/closeIcon.png")}
+            resizeMode="contain"
+            style={styles.closeIconImg}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+function IconsList() {
+  return (
+    <View style={styles.buttonsContainer}>
+      {allIcons.map((iconString) => {
+        return <Icon iconString={iconString} key={iconString} />;
+      })}
+    </View>
+  );
+}
+
+function Icon({ iconString }) {
+  function handlePress() {
+    setSelectedIconString(iconString);
+    toggleBottomSheet();
+  }
+
+  return (
+    <View style={styles.iconImgContainer}>
+      <TouchableOpacity
+        key={iconString}
+        style={styles.handiMarkerContainer}
+        onPress={handlePress}
       >
-        <View style={styles.bottomNavigationView}>
-          <Text style={[styles.generalText, styles.header]}>
-            Add a HandiMarker
-          </Text>
-          <View style={styles.closeIconContainer}>
-            <TouchableOpacity
-              // style={styles.handiMarkerContainer}
-              onPress={() => {
-                setBottomSheetVisible(false);
-              }}
-            >
-              <Image
-                source={require("../assets/closeIcon.png")}
-                resizeMode="contain"
-                style={styles.closeIconImg}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={[
-              styles.buttonsContainer,
-              {
-                paddingLeft: effectivePadding,
-                paddingRight: effectivePadding,
-              },
-            ]}
-          >
-            {iconButton}
-          </View>
+        <View style={styles.markerImgWrapper}>
+          <Image
+            source={renderIcon(iconString)}
+            resizeMode="contain"
+            style={styles.iconImg}
+          />
         </View>
-      </BottomSheet>
-
-      {/* 
-      I tried to put the second bottom sheet in another component but 
-      with this structure, the close animations were lost. 
-      {detailsBottomSheetVisible ? <AddDetailsBottomSheet
-        detailsBottomSheetVisible={detailsBottomSheetVisible}
-        selectedIconString={selectedIconString}
-        placeName={placeName}
-        description={description}
-        iconEvent={iconEvent}
-        setBottomSheetVisible={setBottomSheetVisible}
-        setCoords={setCoords}
-        coords={coords}
-        toggleBottomSheet={toggleBottomSheet}
-        setDetailsBottomSheetVisible={setDetailsBottomSheetVisible}
-      /> : null} */}
-
-      <BottomSheet
-        visible={detailsBottomSheetVisible}
-        onBackButtonPress={() => toggleBottomSheet()}
-        onBackdropPress={() => toggleBottomSheet()}
-      >
-        <View style={styles.bottomAddIconView}>
-          <View style={styles.addIconImgContainer}>
-            <Image
-              source={renderIcon(selectedIconString)}
-              resizeMode="contain"
-              style={styles.addIconImg}
-            />
-          </View>
-          <Text style={[styles.generalText, styles.iconTitleText]}>
-            {renderTitle(selectedIconString)}
-          </Text>
-          {/* input place name */}
-          <View style={styles.locationContainer}>
-            <Text style={[styles.generalText, styles.propertyText]}>
-              Address detected. Feel free to modify it =)
-            </Text>
-            <View style={styles.editContainer}>
-              <TextInput
-                onChangeText={(text) => setChangePlaceName(text)}
-                value={placeName}
-                style={[
-                  styles.generalText,
-                  styles.iconText,
-                  styles.placeNameText,
-                ]}
-              />
-            </View>
-          </View>
-          {/* input place description */}
-          <View style={styles.locationContainer}>
-            <Text style={[styles.generalText, styles.propertyText]}>
-              Provide some details to help even more =)
-            </Text>
-            <View style={[styles.editContainer, styles.descriptionContainer]}>
-              <TextInput
-                multiline={true}
-                onChangeText={(text) => onChangeDescription(text)}
-                value={description}
-                style={[
-                  styles.generalText,
-                  styles.iconText,
-                  styles.descriptionText,
-                ]}
-              />
-            </View>
-          </View>
-
-          {/* Send button */}
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={() => {
-              const newCoordinate = {
-                placeName: placeName,
-                icon: selectedIconString,
-                latitude: iconEvent.coordinate.latitude,
-                longitude: iconEvent.coordinate.longitude,
-                description: description === "" ? "" : description,
-                score: 0,
-              };
-              setCoords([...coords, newCoordinate]);
-              postNewCoord(newCoordinate);
-              setBottomSheetVisible(false);
-              setDetailsBottomSheetVisible(false);
-            }}
-          >
-            <Text style={[styles.generalText, styles.textStyle]}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </BottomSheet>
+        <Text style={styles.generalText}>{renderTitle(iconString)}...</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  bottomSheet: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 5.46,
+
+    elevation: 9,
+  },
   addIconImg: {
     width: 60,
     height: 60,
@@ -309,9 +315,9 @@ const styles = StyleSheet.create({
     flex: 3,
     flexWrap: "wrap",
     flexDirection: "row",
-    // backgroundColor: "blue",
     marginTop: 20,
-
+    paddingLeft: effectivePadding,
+    paddingRight: effectivePadding,
     justifyContent: "center",
     alignItems: "center",
     width: 400,
