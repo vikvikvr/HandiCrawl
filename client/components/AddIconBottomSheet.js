@@ -12,7 +12,6 @@ import {
 import * as Location from "expo-location";
 import { renderIcon, renderTitle, allIcons } from "../services/iconFactory";
 import { postNewCoord } from "../services/apiServices";
-// import AddDetailsBottomSheet from './AddDetailsBottomSheet';
 
 export default function AddIconBottomSheet({
   iconEvent,
