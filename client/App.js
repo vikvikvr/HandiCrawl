@@ -32,8 +32,13 @@ export default function App() {
   // useAppFonts();
 
   // first time loading, get the first area to populate based on user location
-  useEffect(() => {
-    async function prepare() {
+  useEffect(prepare, []);
+
+  //When the user changes region on the map, call the function that handles what to do
+  useEffect(updateMapElements, [region]);
+
+  function prepare() {
+    (async function () {
       try {
         //get user permission to access location
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -56,12 +61,8 @@ export default function App() {
         console.warn(u_u);
         // TODO: error page
       }
-    }
-    prepare();
-  }, []);
-
-  //When the user changes region on the map, call the function that handles what to do
-  useEffect(updateMapElements, [region]);
+    })();
+  }
 
   //function to get new icons from the API service. called when need new icons
   async function getNewIcons(region) {
@@ -83,7 +84,7 @@ export default function App() {
     - if any of those checks pass, we don't do anything
     - otherwise we call the database and populate the new area
     */
-  const updateMapElements = async () => {
+  async function updateMapElements() {
     if (!region) return;
     //At launch, the map loads coordinate around an area beyong the simple screen view. this below checks if we're
     //still in the area when the user drags the map. If we're still in them, we don't call the database
@@ -114,7 +115,7 @@ export default function App() {
     setStoredBounds(getBounds(region));
     setStillInBounds(false);
     await getNewIcons(region);
-  };
+  }
 
   if (!appIsReady) return null;
 
@@ -131,7 +132,6 @@ export default function App() {
             </Text>
           </View>
           {/* <SearchBar /> */}
-          {/* Behold, the actual map view below */}
           <MapRender
             region={region}
             markers={markers}
@@ -140,23 +140,7 @@ export default function App() {
             maxZoom={maxZoom}
             stillInBounds={stillInBounds}
           />
-          <View style={styles.bottomMainView}>
-            <Text></Text>
-          </View>
-          <View style={styles.infoContainerContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setInfoModalVisible(true);
-              }}
-              style={styles.infoContainer}
-            >
-              <Image
-                style={styles.infoIcon}
-                resizeMode="contain"
-                source={infoIcon}
-              />
-            </TouchableOpacity>
-          </View>
+          <TopRightInfoIcon />
         </View>
       </View>
 
@@ -170,6 +154,19 @@ export default function App() {
         </View>
       ) : null}
       <StatusBar style="light" hidden={false} />
+    </View>
+  );
+}
+
+function TopRightInfoIcon() {
+  return (
+    <View style={styles.infoContainerContainer}>
+      <TouchableOpacity
+        onPress={() => setInfoModalVisible(true)}
+        style={styles.infoContainer}
+      >
+        <Image style={styles.infoIcon} resizeMode="contain" source={infoIcon} />
+      </TouchableOpacity>
     </View>
   );
 }

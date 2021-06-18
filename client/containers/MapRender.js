@@ -29,47 +29,29 @@ export default function MapRender({
   const [temporaryHandiMarker, setTemporaryHandiMarker] = useState(null); //when you edit an existing marker, the modifications are held here.
   //This way, if the user cancels the edit, nothing will change. Otherwise the edits will be sent to the database with this.
 
-  //This useEffect is called everytime the state of currentIconSelected is changed.
-  //Basically, on clicking on an existing marker, the event holds the coordinates of this marker (just longitude and latitude).
-  //The value of currentIconSelected is set to this.
-  //It will then be matched against all the coords array, because the coords array holds the actual marker data (placeName, description, score etc.)
-  //So you filter the coords array to only give back the appropriate coordinate and hold it in currentCallout.
-  //This way, the modals will know which marker to present specifically.
-  useEffect(() => {
+  useEffect(handleCurrentIconChange, [currentIconSelected]);
+  useEffect(() => setDimension(region), [region]);
+
+  function handleCurrentIconChange() {
     if (!currentIconSelected) return;
-    const iconSelected = coords.filter((coord) => {
+    const iconSelected = coords.find((coord) => {
       return (
         coord.latitude === currentIconSelected.latitude &&
         coord.longitude === currentIconSelected.longitude
       );
     });
-    setCurrentCallout(iconSelected[0]);
-  }, [currentIconSelected]);
+    setCurrentCallout(iconSelected);
+  }
 
   //adapt the size of the icons on the map depending on the zoom level
-  const setDimension = (region) => {
+  function setDimension(region) {
     if (!region) return;
     if (region.latitudeDelta > 0.004) return 30;
     else return 50;
-  };
-
-  //adapt the size of the icons depending on zoom level
-  useEffect(() => {
-    setDimension(region);
-  }, [region]);
+  }
 
   //creates the conditional width and height of icons by calling setDimension
   let dimension = setDimension(region);
-
-  console.log(
-    coords.length !== 0,
-    coords !== undefined,
-    region.latitudeDelta < maxZoom,
-    !stillInBonds
-  );
-  //populate region will render the actual icon for each coordinate loaded in the area
-  //by looping through the coords array
-  let populateRegion;
 
   const shouldRenderNewMarkers =
     coords.length !== 0 &&
@@ -77,62 +59,6 @@ export default function MapRender({
     region.latitudeDelta < maxZoom &&
     !stillInBonds;
 
-  if (shouldRenderNewMarkers) {
-    //create a marker for each element in the coords array
-    markersToRender = coords.map((coordItem) => {
-      console.log("firing populate region");
-      return (
-        <View
-          key={coordItem.latitude + coordItem.longitude}
-          style={styles.markerContainer}
-        >
-          <MapView.Marker
-            style={styles.marker}
-            coordinate={coordItem}
-            anchor={{ x: 0.5, y: 0.5 }}
-            onPress={(e) => {
-              //if you press a marker, get the coordinates, and open the modal with the
-              //appropriate data (later on)
-              setMarkerDetailsModalVisible(true);
-              console.log("current icon selected", e.nativeEvent.coordinate);
-              setCurrentIconSelected(e.nativeEvent.coordinate);
-            }}
-          >
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                backgroundColor: "yelloww",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                resizeMode="contain"
-                style={{
-                  width: dimension,
-                  height: dimension,
-                  shadowColor: "#000",
-                }}
-                source={renderIcon(coordItem.icon)}
-              />
-            </View>
-            {/* This below prevents the default tooltip from opening
-            when clicking on a marker, because I have my own custom ones. */}
-            <MapView.Callout tooltip={false}></MapView.Callout>
-          </MapView.Marker>
-        </View>
-      );
-    });
-  } else markersToRender = null;
-
-  //the parent holds the modal states (hence the toggles below) but technically
-  //you could have a hierarchy like this
-  //CalloutModal
-  //----EditModal
-  //---------IconEdit Modal
-  //in which case MapRend doesn't need to hold those states
-  //but didn't have time!
   function toggleCalloutToEdit() {
     setMarkerDetailsModalVisible(!markerDetailsModalVisible);
     setEditModalScreen(!editModalScreen);
@@ -143,37 +69,43 @@ export default function MapRender({
     setEditModalScreen(!editModalScreen);
   }
 
+  function handleLongPress(e) {
+    //on long press, you will open the bottom sheet to add
+    //a new marker. Except if you're too far zoomed out
+    if (region.latitudeDelta > maxZoom) return;
+    else {
+      setIconEvent(e.nativeEvent);
+      setBottomSheetVisible(true);
+    }
+  }
+
+  const initialRegion = {
+    latitude: region.latitude,
+    longitude: region.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  };
+
   return (
     <View style={styles.container}>
       <MapView
         onRegionChangeComplete={(region) => setRegion(region)}
         style={styles.map}
-        initialRegion={{
-          latitude: region.latitude,
-          longitude: region.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
+        initialRegion={initialRegion}
         loadingEnabled={true}
         provider={MapView.PROVIDER_GOOGLE}
         customMapStyle={customStyle}
         showsUserLocation={true}
         showsMyLocationButton={true}
         rotateEnabled={false}
-        onLongPress={(e) => {
-          //on long press, you will open the bottom sheet to add
-          //a new marker. Except if you're too far zoomed out
-          if (region.latitudeDelta > maxZoom) return;
-          else {
-            setIconEvent(e.nativeEvent);
-            setBottomSheetVisible(true);
-          }
-        }}
+        onLongPress={handleLongPress}
       >
-        {markersToRender}
+        {shouldRenderNewMarkers && <MarkersToRender />}
       </MapView>
 
-      {bottomSheetVisible ? (
+      {/* TODO: move modals to parent component */}
+
+      {bottomSheetVisible && (
         <AddIconBottomSheet
           iconEvent={iconEvent}
           bottomSheetVisible={bottomSheetVisible}
@@ -181,9 +113,9 @@ export default function MapRender({
           setCoords={setCoords}
           coords={coords}
         />
-      ) : null}
+      )}
 
-      {currentCallout ? (
+      {currentCallout && (
         <View style={styles.modalContainer}>
           <CalloutModal
             setCoords={setCoords}
@@ -193,9 +125,9 @@ export default function MapRender({
             toggleCalloutToEdit={toggleCalloutToEdit}
           />
         </View>
-      ) : null}
+      )}
 
-      {editModalScreen ? (
+      {editModalScreen && (
         <View style={styles.modalContainer}>
           <EditModal
             markerDetailsModalVisible={markerDetailsModalVisible}
@@ -210,7 +142,7 @@ export default function MapRender({
             setCoords={setCoords}
           />
         </View>
-      ) : null}
+      )}
 
       {iconEditModalScreen ? (
         <View style={styles.modalContainer}>
@@ -222,6 +154,64 @@ export default function MapRender({
           />
         </View>
       ) : null}
+    </View>
+  );
+}
+
+//create a marker for each element in the coords array
+function MarkersToRender({ shouldRenderNewMarkers }) {
+  if (!shouldRenderNewMarkers) {
+    return null;
+  }
+
+  function handleMarkerPress(e) {
+    //if you press a marker, get the coordinates, and open the modal with the
+    //appropriate data (later on)
+    setMarkerDetailsModalVisible(true);
+    console.log("current icon selected", e.nativeEvent.coordinate);
+    setCurrentIconSelected(e.nativeEvent.coordinate);
+  }
+
+  return (
+    <View>
+      {coords.map((coordItem) => {
+        return (
+          <View
+            key={coordItem.latitude + coordItem.longitude}
+            style={styles.markerContainer}
+          >
+            <MapView.Marker
+              style={styles.marker}
+              coordinate={coordItem}
+              anchor={{ x: 0.5, y: 0.5 }}
+              onPress={handleMarkerPress}
+            >
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: "yelloww",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  resizeMode="contain"
+                  style={{
+                    width: dimension,
+                    height: dimension,
+                    shadowColor: "#000",
+                  }}
+                  source={renderIcon(coordItem.icon)}
+                />
+              </View>
+              {/* This below prevents the default tooltip from opening
+            when clicking on a marker, because I have my own custom ones. */}
+              <MapView.Callout tooltip={false}></MapView.Callout>
+            </MapView.Marker>
+          </View>
+        );
+      })}
     </View>
   );
 }
