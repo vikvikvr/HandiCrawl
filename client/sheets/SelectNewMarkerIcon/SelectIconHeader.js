@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { renderIcon } from "../../services/iconFactory";
+import { View, Text } from "react-native";
 import { setSheet } from "../../services/stateService";
 import { styles } from "./styles";
+import { ButtonIcon } from "../../components/ButtonIcon/ButtonIcon";
 
 export function SelectIconHeader() {
   return (
@@ -16,13 +16,7 @@ export function SelectIconHeader() {
 function CloseIcon() {
   return (
     <View style={styles.closeIconContainer}>
-      <TouchableOpacity onPress={() => setSheet("")}>
-        <Image
-          source={renderIcon("closeIcon")}
-          resizeMode="contain"
-          style={styles.closeIconImg}
-        />
-      </TouchableOpacity>
+      <ButtonIcon iconName="close" onPress={() => setSheet("")} />
     </View>
   );
 }

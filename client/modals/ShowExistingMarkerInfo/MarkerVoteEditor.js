@@ -1,7 +1,5 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
-import thumbUpIcon from "../../assets/activeThumbsUp.png";
-import thumbDownIcon from "../../assets/thumbsup.png";
 import { styles } from "./styles";
 import { useSubject } from "../../hooks/useSubject";
 import { marker$ } from "../../services/stateService";
@@ -13,33 +11,9 @@ export function MarkerVoteEditor() {
 
   return (
     <View style={styles.thumbsContainer}>
-      <VoteUpIcon />
+      <ButtonIcon iconName="voteUp" onPress={() => voteMarker(1)} />
       <Text style={[styles.generalText, styles.scoreText]}>{marker.score}</Text>
-      <VoteDownIcon />
+      <ButtonIcon iconName="voteDown" onPress={() => voteMarker(-1)} />
     </View>
-  );
-}
-
-function VoteUpIcon() {
-  return (
-    <TouchableOpacity onPress={() => voteMarker(1)}>
-      <Image
-        source={thumbUpIcon}
-        style={styles.thumbsIcon}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
-  );
-}
-
-function VoteDownIcon() {
-  return (
-    <TouchableOpacity onPress={() => voteMarker(-1)}>
-      <Image
-        source={thumbDownIcon}
-        style={styles.thumbsIcon}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
   );
 }

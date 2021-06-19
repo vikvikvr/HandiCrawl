@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { View, Image, Text } from "react-native";
 import { styles } from "./styles";
 import { renderIcon, renderTitle } from "../../services/iconFactory";
 import { useSubject } from "../../hooks/useSubject";
 import { setModal, marker$ } from "../../services/stateService";
+import { ButtonIcon } from "../../components/ButtonIcon/ButtonIcon";
+import { MarkerIcon } from "../../components/MarkerIcon/MarkerIcon";
 
 export function EditIconRow() {
   const [marker] = useSubject(marker$);
@@ -11,26 +13,13 @@ export function EditIconRow() {
   return (
     <View style={styles.editContainer}>
       <View style={styles.iconImgContainer}>
-        <MarkerIcon icon={marker.icon} />
+        <MarkerIcon iconName={marker.icon} isLarge />
         <Text style={styles.iconText}>{renderTitle(marker.icon)}</Text>
-        <EditIcon />
+        <ButtonIcon
+          iconName="edit"
+          onPress={() => setModal("edit-existing-marker-icon")}
+        />
       </View>
     </View>
-  );
-}
-
-function MarkerIcon({ icon }) {
-  return <Image source={renderIcon(icon)} style={styles.generalIcon} />;
-}
-
-function EditIcon() {
-  return (
-    <TouchableOpacity onPress={() => setModal("edit-existing-marker-icon")}>
-      <Image
-        source={renderIcon("edit")}
-        style={[styles.trashIcon, styles.editIcon]}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
   );
 }

@@ -1,13 +1,13 @@
 import React from "react";
 import { useSubject } from "../../hooks/useSubject";
 import { markers$, region$ } from "../../services/stateService";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import MapView from "react-native-maps";
 import { styles } from "./styles";
-import { renderIcon } from "../../services/iconFactory";
 import { maxZoom } from "../../services/mapService";
 import { showMarkerInfo } from "../../services/markerService";
 import { getIconSize } from "../../utils/utils";
+import { MarkerIcon } from "../../components/MarkerIcon/MarkerIcon";
 
 //create a marker for each element in the markers array
 export function MarkersToRender() {
@@ -40,25 +40,19 @@ export function MarkersToRender() {
 
   return (
     <View>
-      {markers.map((coordItem) => {
+      {markers.map((marker) => {
         return (
           <View
-            key={coordItem.latitude + coordItem.longitude}
+            key={marker.latitude + marker.longitude}
             style={styles.markerContainer}
           >
             <MapView.Marker
               style={styles.marker}
-              coordinate={coordItem}
+              coordinate={marker}
               anchor={{ x: 0.5, y: 0.5 }}
               onPress={showMarkerInfo}
             >
-              <View style={markerImageContainer}>
-                <Image
-                  resizeMode="contain"
-                  style={markerImage}
-                  source={renderIcon(coordItem.icon)}
-                />
-              </View>
+              <MarkerIcon iconName={marker.icon} />
               <MapView.Callout tooltip={false} />
             </MapView.Marker>
           </View>

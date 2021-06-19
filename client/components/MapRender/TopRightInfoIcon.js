@@ -1,16 +1,13 @@
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View } from "react-native";
 import { setModal } from "../../services/stateService";
+import { ButtonIcon } from "../ButtonIcon/ButtonIcon";
+import { styles } from "./styles";
 
 export function TopRightInfoIcon() {
   return (
     <View style={styles.infoContainerContainer}>
-      <TouchableOpacity
-        onPress={() => setModal("markers-key")}
-        style={styles.infoContainer}
-      >
-        <Image style={styles.infoIcon} resizeMode="contain" source={infoIcon} />
-      </TouchableOpacity>
+      <ButtonIcon onPress={() => setModal("markers-key")} iconName="info" />
     </View>
   );
 }
