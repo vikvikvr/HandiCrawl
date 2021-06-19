@@ -2,7 +2,7 @@ import React from "react";
 import { useSubject } from "../../hooks/useSubject";
 import {
   markers$,
-  region$,
+  currentCoordinates$,
   selectedMarker$,
   setModal,
 } from "../../services/stateService";
@@ -10,31 +10,28 @@ import { View, Image } from "react-native";
 import MapView from "react-native-maps";
 import { styles } from "./styles";
 import { renderIcon } from "../../services/iconFactory";
+import { maxZoom } from "../../services/mapService";
 
 //create a marker for each element in the markers array
 export function MarkersToRender() {
   const [markers] = useSubject(markers$);
   const [_, setSelectedMarker] = useSubject(selectedMarker$);
-  const [region] = useSubject(region$);
+  const [currentCoordinates] = useSubject(currentCoordinates$);
 
-  const shouldRenderNewMarkers =
-    markers.length !== 0 &&
-    markers !== undefined &&
-    region.latitudeDelta < maxZoom &&
-    !stillInBonds;
+  const tooZoomedOut = currentCoordinates.latitudeDelta > maxZoom;
 
-  if (!shouldRenderNewMarkers) {
+  if (tooZoomedOut) {
     return null;
   }
 
   //adapt the size of the icons on the map depending on the zoom level
-  function getIconSize(region) {
-    if (!region) return;
-    if (region.latitudeDelta > 0.004) return 30;
+  function getIconSize(currentCoordinates) {
+    if (!currentCoordinates) return;
+    if (currentCoordinates.latitudeDelta > 0.004) return 30;
     else return 50;
   }
 
-  let iconSize = getIconSize(region);
+  let iconSize = getIconSize(currentCoordinates);
 
   function handleMarkerPress(e) {
     const { latitude, longitude } = e.nativeEvent.coordinate;

@@ -1,70 +1,62 @@
-import db from "../fakedb";
+import fakeMarkers from "../fakedb";
 import { getDistance, getBoundsOfDistance } from "geolib";
-const maxDistance = 3000; //max distance from the current region to load icons from
-
+export const maxDistance = 3000; //max distance from the current region to load icons from
+import { currentCoordinates$, bounds$ } from "./stateService";
 import dbh from "./databaseConnection";
 
-//When called, sets the bounds of the area in which to load the icons
-export function getBounds(region) {
-  const bounds = getBoundsOfDistance(
-    { latitude: region.latitude, longitude: region.longitude },
-    maxDistance
-  );
-  const formattedBounds = {
-    minLat: bounds[0].latitude,
-    minLong: bounds[0].longitude,
-    maxLat: bounds[1].latitude,
-    maxLong: bounds[1].longitude,
+export function getBounds({ latitude, longitude }) {
+  const side = maxDistance / 2;
+
+  return {
+    minLatitude: latitude - side,
+    maxLatitude: latitude + side,
+    minLongitude: longitude - side,
+    maxLongitude: longitude + side,
   };
-  return formattedBounds;
+}
+
+// allMarkers.filter(insideBoundsFilter)
+
+// insideBoundsFilter(someBounds) -> (marker)=>bool
+
+function makeBoundsFilter({
+  maxLatitude,
+  maxLongitude,
+  minLatitude,
+  minLongitude,
+}) {
+  return function ({ latitude, longitude }) {
+    const insideLatitude = latitude <= maxLatitude && latitude >= minLatitude;
+    const insideLongitude =
+      longitude <= maxLongitude && longitude >= minLongitude;
+    return insideLatitude && insideLongitude;
+  };
 }
 
 //fetches the appropriate data from the database
-export async function getMarkers(region) {
-  if (!region) return;
+export async function getMarkers() {
+  const bounds = bounds$.value;
+  const boundsFilter = makeBoundsFilter(bounds);
+  return fakeMarkers.filter(boundsFilter);
 
-  console.log("fetching initiated", region);
+  // ACTUAL DATABASE CALL
 
-  const coordinates = dbh.collection("coordinates");
-  const bounds = getBounds(region);
-  const query = await coordinates
-    .where("latitude", ">=", bounds.minLat)
-    .where("latitude", "<=", bounds.maxLat)
-    .get();
-  const coordsArray = [];
-  query.docs.forEach((doc) => {
-    // console.log("doc data", doc.id);
-    coordsArray.push({
-      ...doc.data(),
-      id: doc.id,
-    });
-  });
-  console.log("coordsArray before leaving", coordsArray.length > 0);
-  return coordsArray;
+  // const coordinates = dbh.collection("coordinates");
 
-  // I keep this below to test without wasting requests to Firestore (since there's a quota)
-  // If you want to call your actual firestore database, uncomment the part
-  //above
-  // return [
-  //   {
-  //     id: "60c3234d36ac69e8941637b0",
-  //     placeName: "Dans ton gros cul pourri",
-  //     icon: "ramp",
-  //     latitude: 44.43750100149944,
-  //     longitude: 26.09280906994737,
-  //     description: "entrance by the East Side - ramp available",
-  //     score: 0,
-  //   },
-  //   {
-  //     id: "OfabKCtMaaS1WrsDbS8N",
-  //     placeName: "Ion Campineanu 29 bloc 6 Sc.1",
-  //     icon: "warning",
-  //     latitude: 44.438269898955824,
-  //     longitude: 26.094277233533187,
-  //     description: "floor not flat for wheelchairs",
-  //     score: 0,
-  //   },
-  // ];
+  // const query = await coordinates
+  //   .where("latitude", ">=", bounds.minLatitude)
+  //   .where("latitude", "<=", bounds.maxLatitude)
+  //   .where("longitude", ">=", bounds.minLongitude)
+  //   .where("longitude", "<=", bounds.maxLongitude)
+  //   .get();
+
+  // query.docs.forEach((doc) => {
+  //   // console.log("doc data", doc.id);
+  //   coordsArray.push({
+  //     ...doc.data(),
+  //     id: doc.id,
+  //   });
+  // });
 }
 
 export async function addMarker(marker = {}) {

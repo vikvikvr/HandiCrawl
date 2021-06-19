@@ -3,36 +3,57 @@ import MapView from "react-native-maps";
 import { View } from "react-native";
 import { useSubject } from "../../hooks/useSubject";
 import {
-  pressedCoordinates$,
-  region$,
+  currentCoordinates$,
+  bounds$,
+  markers$,
   setSheet,
+  selectedMarker$,
 } from "../../services/stateService";
+import { isWithinBounds } from "../../services/mapService";
+import { getBounds, getMarkers } from "../../services/apiServices";
 import { styles, customStyle } from "./styles";
 import { MarkersToRender } from "./MarkersToRender";
 
 export function MapRender() {
-  const [region, setRegion] = useSubject(region$);
-  // from outside:
-  // - coords(markersArray)
-  // - stillInBonds
-  // - maxZoom
-  const [_, setPressedCoordinates] = useSubject(pressedCoordinates$);
+  const [markers, setMarkers] = useSubject(markers$);
+  const [marker, setMarker] = useSubject(selectedMarker$);
+  const [bounds, setBounds] = useSubject(bounds$);
+  const [coordinates, setCoordinates] = useSubject(currentCoordinates$);
 
-  function handleMapLongPress(e) {
-    if (region.latitudeDelta < maxZoom) {
-      // TODO
-      setPressedCoordinates(e.nativeEvent.coordinate);
-      // use selectedMarker instead
+  function startToAddNewMarker(event) {
+    const { latitude, longitude, latitudeDelta } = e.nativeEvent.coordinate;
 
-      // e.nativeEvent.coordinate =>
-      // {latitude, longitude}
+    if (latitudeDelta > maxZoom) {
+      console.log("too zoomed out to add marker");
+      return;
+    }
 
-      setSheet("select-new-marker-icon");
+    setMarker({ ...marker, latitude, longitude });
+    setSheet("select-new-marker-icon");
+  }
+
+  async function updateMarkersBasedOnPosition({ latitude, longitude }) {
+    setCoordinates({ latitude, longitude });
+
+    const inBounds = isWithinBounds();
+
+    if (!inBounds) {
+      // create new bounds
+      const newBounds = getBounds({ latitude, longitude });
+      setBounds(newBounds);
+
+      try {
+        // load new markers
+        const newMarkers = await getMarkers();
+        setMarkers(newMarkers);
+      } catch (error) {
+        console.log("failed to get new markers");
+      }
     }
   }
 
   const initialRegion = {
-    ...region,
+    ...coordinates,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
@@ -40,7 +61,7 @@ export function MapRender() {
   return (
     <View style={styles.container}>
       <MapView
-        onRegionChangeComplete={setRegion}
+        onRegionChangeComplete={updateMarkersBasedOnPosition}
         style={styles.map}
         initialRegion={initialRegion}
         loadingEnabled={true}
@@ -49,7 +70,7 @@ export function MapRender() {
         showsUserLocation={true}
         showsMyLocationButton={true}
         rotateEnabled={false}
-        onLongPress={handleMapLongPress}
+        onLongPress={startToAddNewMarker}
       >
         <MarkersToRender />
       </MapView>

@@ -1,10 +1,12 @@
 import { BehaviorSubject } from "rxjs";
+import { getBounds } from "./apiServices";
 
-// iconEvent.coordinate.longitude,
 const defaultCoordinates = {
   latitude: 0,
   longitude: 0,
 };
+
+const defaultBounds = getBounds({ latitude: 0, longitude: 0 });
 
 const defaultMarker = {
   placeName: "place name",
@@ -15,17 +17,16 @@ const defaultMarker = {
   score: 0,
 };
 
-const defaultRegion = {
+const defaultCoordinates = {
   latitude: 0,
   longitude: 0,
-  latitudeDelta: 0,
-  longitudeDelta: 0,
 };
 
 // map-related
 export const markers$ = new BehaviorSubject([]);
-export const pressedCoordinates$ = new BehaviorSubject(defaultCoordinates);
-export const region$ = new BehaviorSubject(defaultRegion);
+// TODO: rename to region
+export const currentCoordinates$ = new BehaviorSubject(defaultCoordinates);
+export const bounds$ = new BehaviorSubject(defaultBounds);
 
 // app-related
 export const currentModal$ = new BehaviorSubject("");
