@@ -6,6 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "test": "jest --watch",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "prettier:check": "prettier . --check",
     "prettier:fix": "prettier . --write",
@@ -45,6 +46,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.14.5",
+    "@testing-library/jest-native": "^4.0.1",
+    "@testing-library/react-native": "^7.2.0",
+    "@types/jest": "^26.0.23",
+    "babel-jest": "^27.0.2",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.23.4",
@@ -52,7 +58,15 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^6.0.0",
+    "jest": "^27.0.4",
+    "jest-expo": "^41.0.0",
     "prettier": "^2.3.1"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|svg)$": "<rootDir>/__mocks__/imageMock.js"
+    }
   },
   "private": true
 }
