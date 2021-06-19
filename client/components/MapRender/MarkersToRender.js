@@ -1,6 +1,11 @@
 import React from "react";
 import { useSubject } from "../../hooks/useSubject";
-import { markers$, region$ } from "../../services/stateService";
+import {
+  markers$,
+  region$,
+  selectedMarker$,
+  setModal,
+} from "../../services/stateService";
 import { View, Image } from "react-native";
 import MapView from "react-native-maps";
 import { styles } from "./styles";
@@ -9,6 +14,7 @@ import { renderIcon } from "../../services/iconFactory";
 //create a marker for each element in the markers array
 export function MarkersToRender() {
   const [markers] = useSubject(markers$);
+  const [_, setSelectedMarker] = useSubject(selectedMarker$);
   const [region] = useSubject(region$);
 
   const shouldRenderNewMarkers =
@@ -31,9 +37,18 @@ export function MarkersToRender() {
   let iconSize = getIconSize(region);
 
   function handleMarkerPress(e) {
-    // TODO: store coordinates in state
-    // open new marker modal
-    // e.nativeEvent.coordinate
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+
+    const matchedMarker = markers.find((marker) => {
+      const sameLatitude = marker.latitude === latitude;
+      const sameLongitude = marker.longitude === longitude;
+      return sameLatitude && sameLongitude;
+    });
+
+    if (matchedMarker) {
+      setSelectedMarker(matchedMarker);
+      setModal("show-existing-marker-info");
+    }
   }
 
   const markerImageContainer = {

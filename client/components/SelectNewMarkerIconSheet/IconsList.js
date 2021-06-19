@@ -7,8 +7,8 @@ import { allIcons } from "../../services/iconFactory";
 export function IconsList() {
   return (
     <View style={styles.buttonsContainer}>
-      {allIcons.map((iconName) => {
-        return <Icon iconName={iconName} key={iconName} />;
+      {allIcons.map((icon) => {
+        return <Icon icon={icon} key={icon} />;
       })}
     </View>
   );

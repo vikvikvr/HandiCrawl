@@ -67,11 +67,11 @@ export async function getMarkers(region) {
   // ];
 }
 
-export async function postNewCoord(coord) {
+export async function addMarker(marker = {}) {
   // console.log("in async posting", coord)
-  const res = await dbh.collection("coordinates").add(coord);
-  console.log("SEEEENT", !!res);
-  // console.log('Added document with ID:', res.id);
+  const document = await dbh.collection("coordinates").add(marker);
+  console.log("marker added", !!document);
+  return document;
 }
 
 export async function sendUpdateCoord(coord) {

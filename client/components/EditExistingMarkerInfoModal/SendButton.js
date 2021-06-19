@@ -1,16 +1,25 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { useSubject } from "../../hooks/useSubject";
-import { setModal, selectedMarker$ } from "../../services/stateService";
+import {
+  setModal,
+  selectedMarker$,
+  markers$,
+} from "../../services/stateService";
 import { styles } from "./styles";
 
 export function SendButton() {
-  const [marker, setMarker] = useSubject(selectedMarker$);
+  const [marker] = useSubject(selectedMarker$);
+  const [markers, setMarkers] = useSubject(markers$);
 
   function updateMarker() {
-    // TODO: add marker (to state and to db)
+    // TODO: add marker to db
     setModal("");
-    setMarker({});
+    const { id } = marker;
+    const newMarkers = markers.map((m) => {
+      return m.id === id ? marker : m;
+    });
+    setMarkers(newMarkers);
   }
 
   return (

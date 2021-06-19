@@ -11,14 +11,11 @@ export function MarkerIcon() {
   return (
     <View>
       <View style={styles.iconImgContainer}>
-        <Image
-          source={renderIcon(marker.iconName)}
-          style={styles.generalIcon}
-        />
+        <Image source={renderIcon(marker.icon)} style={styles.generalIcon} />
       </View>
       <View style={styles.iconTitle}>
         <Text style={[styles.generalText, styles.iconTitleText]}>
-          {renderTitle(marker.iconName)}
+          {renderTitle(marker.icon)}
         </Text>
       </View>
     </View>

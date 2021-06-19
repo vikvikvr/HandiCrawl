@@ -22,7 +22,12 @@ export function MapRender() {
     if (region.latitudeDelta < maxZoom) {
       // TODO
       setPressedCoordinates(e.nativeEvent.coordinate);
-      setSheet("bottom");
+      // use selectedMarker instead
+
+      // e.nativeEvent.coordinate =>
+      // {latitude, longitude}
+
+      setSheet("select-new-marker-icon");
     }
   }
 

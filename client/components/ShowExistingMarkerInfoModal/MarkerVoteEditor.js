@@ -11,27 +11,40 @@ export function MarkerVoteEditor() {
   const [marker, setMarker] = useSubject(selectedMarker$);
 
   function voteMarker(amount = 0) {
+    // TODO: save also to db and all markers in state
     const score = marker.score + amount;
     setMarker({ ...marker, score });
   }
 
   return (
     <View style={styles.thumbsContainer}>
-      <TouchableOpacity onPress={() => voteMarker(1)}>
-        <Image
-          source={thumbUpIcon}
-          style={styles.thumbsIcon}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      <VoteUpIcon voteMarker={voteMarker} />
       <Text style={[styles.generalText, styles.scoreText]}>{marker.score}</Text>
-      <TouchableOpacity onPress={() => voteMarker(-1)}>
-        <Image
-          source={thumbDownIcon}
-          style={styles.thumbsIcon}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      <VoteDownIcon voteMarker={voteMarker} />
     </View>
+  );
+}
+
+function VoteUpIcon({ voteMarker }) {
+  return (
+    <TouchableOpacity onPress={() => voteMarker(1)}>
+      <Image
+        source={thumbUpIcon}
+        style={styles.thumbsIcon}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+  );
+}
+
+function VoteDownIcon({ voteMarker }) {
+  return (
+    <TouchableOpacity onPress={() => voteMarker(-1)}>
+      <Image
+        source={thumbDownIcon}
+        style={styles.thumbsIcon}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   );
 }

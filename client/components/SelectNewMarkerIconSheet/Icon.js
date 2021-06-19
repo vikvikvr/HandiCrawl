@@ -5,29 +5,28 @@ import { setSheet, selectedMarker$ } from "../../services/stateService";
 import { renderIcon, renderTitle } from "../../services/iconFactory";
 import { styles } from "./styles";
 
-export function Icon({ iconName }) {
+export function Icon({ icon }) {
   const [marker, setMarker] = useSubject(selectedMarker$);
 
   function chooseIcon() {
+    setMarker({ ...marker, icon });
     setSheet("edit-new-marker-info");
-    setMarker({ ...marker, iconName });
   }
 
   return (
     <View style={styles.iconImgContainer}>
       <TouchableOpacity
-        key={iconName}
         style={styles.handiMarkerContainer}
         onPress={chooseIcon}
       >
         <View style={styles.markerImgWrapper}>
           <Image
-            source={renderIcon(iconName)}
+            source={renderIcon(icon)}
             resizeMode="contain"
             style={styles.iconImg}
           />
         </View>
-        <Text style={styles.generalText}>{renderTitle(iconName)}...</Text>
+        <Text style={styles.generalText}>{renderTitle(icon)}...</Text>
       </TouchableOpacity>
     </View>
   );

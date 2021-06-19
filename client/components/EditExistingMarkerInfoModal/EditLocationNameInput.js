@@ -7,8 +7,8 @@ import { styles } from "./styles";
 export function EditLocationNameInput() {
   const [marker, setMarker] = useSubject(selectedMarker$);
 
-  function updateLocationName(locationName = "") {
-    setMarker({ ...marker, locationName });
+  function updateLocationName(placeName = "") {
+    setMarker({ ...marker, placeName });
   }
 
   return (
@@ -16,7 +16,7 @@ export function EditLocationNameInput() {
       <TextInput
         style={[styles.generalText, styles.iconText, styles.placeNameText]}
         onChangeText={updateLocationName}
-        value={marker.locationName}
+        value={marker.placeName}
       />
     </View>
   );

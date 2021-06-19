@@ -1,8 +1,16 @@
 import React from "react";
 import { View, Text, TextInput } from "react-native";
 import { styles } from "./styles";
+import { useSubject } from "../../hooks/useSubject";
+import { selectedMarker$ } from "../../services/stateService";
 
-export function EditPlaceNameInput({ placeName, onChangeText }) {
+export function EditPlaceNameInput() {
+  const [marker, setMarker] = useSubject(selectedMarker$);
+
+  function updatePlaceName(placeName = "") {
+    setMarker({ ...marker, placeName });
+  }
+
   return (
     <View style={styles.locationContainer}>
       <Text style={[styles.generalText, styles.propertyText]}>
@@ -10,8 +18,8 @@ export function EditPlaceNameInput({ placeName, onChangeText }) {
       </Text>
       <View style={styles.editContainer}>
         <TextInput
-          onChangeText={onChangeText}
-          value={placeName}
+          onChangeText={updatePlaceName}
+          value={marker.placeName}
           style={[styles.generalText, styles.iconText, styles.placeNameText]}
         />
       </View>

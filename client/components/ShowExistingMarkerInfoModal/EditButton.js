@@ -6,8 +6,7 @@ import editIcon from "../../assets/edit.png";
 
 export function EditButton() {
   function showEditModal() {
-    const goToModal = "edit-esisting-marker-info";
-    setModal(goToModal);
+    setModal("edit-existing-marker-info");
   }
 
   return (

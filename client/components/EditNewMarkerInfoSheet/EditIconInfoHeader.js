@@ -2,19 +2,23 @@ import React from "react";
 import { View, Image, Text } from "react-native";
 import { renderIcon, renderTitle } from "../../services/iconFactory";
 import { styles } from "./styles";
+import { useSubject } from "../../hooks/useSubject";
+import { selectedMarker$ } from "../../services/stateService";
 
-export function EditIconInfoHeader({ iconName }) {
+export function EditIconInfoHeader() {
+  const [marker] = useSubject(selectedMarker$);
+
   return (
     <View>
       <View style={styles.addIconImgContainer}>
         <Image
-          source={renderIcon(iconName)}
+          source={renderIcon(marker.icon)}
           resizeMode="contain"
           style={styles.addIconImg}
         />
       </View>
       <Text style={[styles.generalText, styles.iconTitleText]}>
-        {renderTitle(iconName)}
+        {renderTitle(marker.icon)}
       </Text>
     </View>
   );

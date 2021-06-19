@@ -11,19 +11,26 @@ export function EditIconRow() {
   return (
     <View style={styles.editContainer}>
       <View style={styles.iconImgContainer}>
-        <Image
-          source={renderIcon(marker.iconName)}
-          style={styles.generalIcon}
-        />
-        <Text style={styles.iconText}>{renderTitle(marker.iconName)}</Text>
+        <MarkerIcon icon={marker.icon} />
+        <Text style={styles.iconText}>{renderTitle(marker.icon)}</Text>
+        <EditIcon />
       </View>
-      <TouchableOpacity onPress={() => setModal("edit-existing-icon")}>
-        <Image
-          source={renderIcon("edit")}
-          style={[styles.trashIcon, styles.editIcon]}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
     </View>
+  );
+}
+
+function MarkerIcon({ icon }) {
+  return <Image source={renderIcon(icon)} style={styles.generalIcon} />;
+}
+
+function EditIcon() {
+  return (
+    <TouchableOpacity onPress={() => setModal("edit-existing-marker-icon")}>
+      <Image
+        source={renderIcon("edit")}
+        style={[styles.trashIcon, styles.editIcon]}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   );
 }

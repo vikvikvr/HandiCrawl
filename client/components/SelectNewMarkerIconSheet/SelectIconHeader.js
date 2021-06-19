@@ -8,15 +8,21 @@ export function SelectIconHeader() {
   return (
     <View>
       <Text style={[styles.generalText, styles.header]}>Add a HandiMarker</Text>
-      <View style={styles.closeIconContainer}>
-        <TouchableOpacity onPress={() => setSheet("")}>
-          <Image
-            source={renderIcon("closeIcon")}
-            resizeMode="contain"
-            style={styles.closeIconImg}
-          />
-        </TouchableOpacity>
-      </View>
+      <CloseIcon />
+    </View>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <View style={styles.closeIconContainer}>
+      <TouchableOpacity onPress={() => setSheet("")}>
+        <Image
+          source={renderIcon("closeIcon")}
+          resizeMode="contain"
+          style={styles.closeIconImg}
+        />
+      </TouchableOpacity>
     </View>
   );
 }

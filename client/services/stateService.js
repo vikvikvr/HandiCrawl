@@ -7,9 +7,12 @@ const defaultCoordinates = {
 };
 
 const defaultMarker = {
-  iconName: "no-name",
-  locationName: "no-location",
+  placeName: "place name",
+  icon: "icon name",
+  latitude: 0,
+  longitude: 0,
   description: "no-description",
+  score: 0,
 };
 
 const defaultRegion = {
