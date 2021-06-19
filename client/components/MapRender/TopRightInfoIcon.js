@@ -1,6 +1,8 @@
-export function TopRightInfoIcon() {
-  const [modal, setModal] = useSubject(currentModal$);
+import React from "react";
+import { View, TouchableOpacity, Image } from "react-native";
+import { setModal } from "../../services/stateService";
 
+export function TopRightInfoIcon() {
   return (
     <View style={styles.infoContainerContainer}>
       <TouchableOpacity

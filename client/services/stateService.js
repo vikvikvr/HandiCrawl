@@ -1,12 +1,7 @@
 import { BehaviorSubject } from "rxjs";
-import { getBounds } from "./apiServices";
+import { getBounds } from "./mapService";
 
-const defaultCoordinates = {
-  latitude: 0,
-  longitude: 0,
-};
-
-const defaultBounds = getBounds({ latitude: 0, longitude: 0 });
+// default states
 
 const defaultMarker = {
   placeName: "place name",
@@ -17,26 +12,31 @@ const defaultMarker = {
   score: 0,
 };
 
-const defaultCoordinates = {
+const defaultRegion = {
   latitude: 0,
   longitude: 0,
 };
 
+const defaultBounds = getBounds(defaultRegion);
+
+// behaviours subjects
+
 // map-related
 export const markers$ = new BehaviorSubject([]);
-// TODO: rename to region
-export const currentCoordinates$ = new BehaviorSubject(defaultCoordinates);
+export const region$ = new BehaviorSubject(defaultRegion);
 export const bounds$ = new BehaviorSubject(defaultBounds);
 
 // app-related
-export const currentModal$ = new BehaviorSubject("");
-export const currentSheet$ = new BehaviorSubject("");
-export const selectedMarker$ = new BehaviorSubject(defaultMarker);
+export const modal$ = new BehaviorSubject("");
+export const sheet$ = new BehaviorSubject("");
+export const marker$ = new BehaviorSubject(defaultMarker);
+
+// helper functions
 
 export function setModal(modalName = "") {
-  currentModal$.next(modalName);
+  modal$.next(modalName);
 }
 
 export function setSheet(sheetName = "") {
-  currentSheet$.next(sheetName);
+  sheet$.next(sheetName);
 }

@@ -1,37 +1,7 @@
 import fakeMarkers from "../fakedb";
-import { getDistance, getBoundsOfDistance } from "geolib";
-export const maxDistance = 3000; //max distance from the current region to load icons from
-import { currentCoordinates$, bounds$ } from "./stateService";
+import { bounds$ } from "./stateService";
+import { makeBoundsFilter } from "../utils/utils";
 import dbh from "./databaseConnection";
-
-export function getBounds({ latitude, longitude }) {
-  const side = maxDistance / 2;
-
-  return {
-    minLatitude: latitude - side,
-    maxLatitude: latitude + side,
-    minLongitude: longitude - side,
-    maxLongitude: longitude + side,
-  };
-}
-
-// allMarkers.filter(insideBoundsFilter)
-
-// insideBoundsFilter(someBounds) -> (marker)=>bool
-
-function makeBoundsFilter({
-  maxLatitude,
-  maxLongitude,
-  minLatitude,
-  minLongitude,
-}) {
-  return function ({ latitude, longitude }) {
-    const insideLatitude = latitude <= maxLatitude && latitude >= minLatitude;
-    const insideLongitude =
-      longitude <= maxLongitude && longitude >= minLongitude;
-    return insideLatitude && insideLongitude;
-  };
-}
 
 //fetches the appropriate data from the database
 export async function getMarkers() {
@@ -60,7 +30,6 @@ export async function getMarkers() {
 }
 
 export async function addMarker(marker = {}) {
-  // console.log("in async posting", coord)
   const document = await dbh.collection("coordinates").add(marker);
   console.log("marker added", !!document);
   return document;

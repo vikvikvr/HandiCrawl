@@ -1,15 +1,20 @@
 import React from "react";
 import { useSubject } from "../hooks/useSubject";
-import { currentModal$ } from "../services/modalService";
-// import all modals
-import { MarkersKeyModal } from "../components/MarkersKeyModal";
+import { modal$ } from "../services/modalService";
+// modals
+import { MarkersKey } from "../modals/MarkersKey/MarkersKey";
+import { EditExistingMarkerIcon } from "../modals/EditExistingMarkerIcon/EditExistingMarkerIcon";
+import { EditExistingMarkerInfo } from "../modals/EditExistingMarkerInfo/EditExistingMarkerInfo";
+import { ShowExistingMarkerInfo } from "../modals/ShowExistingMarkerInfo/ShowExistingMarkerInfo";
 
 export function ModalHanlder() {
-  const [modal] = useSubject(currentModal$);
+  const [modal] = useSubject(modal$);
 
   const modalsMap = {
-    info: null,
-    "markers-key": <MarkersKeyModal />,
+    "edit-existing-marker-icon": <EditExistingMarkerIcon />,
+    "edit-existing-marker-info": <EditExistingMarkerInfo />,
+    "show-existing-marker-info": <ShowExistingMarkerInfo />,
+    "markers-key": <MarkersKey />,
   };
 
   if (modal in modalsMap) {
@@ -18,5 +23,3 @@ export function ModalHanlder() {
 
   return null;
 }
-
-// services

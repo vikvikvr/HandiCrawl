@@ -1,13 +1,16 @@
 import React from "react";
 import { useSubject } from "../hooks/useSubject";
-import { currentSheet$ } from "../services/modalService";
-import { AddIconBottomSheet } from "components/AddIconBottomSheet";
+import { sheet$ } from "../services/modalService";
+// sheets
+import { EditNewMarkerInfo } from "../sheets/EditNewMarkerInfo/EditNewMarkerInfo";
+import { SelectNewMarkerIcon } from "../sheets/SelectNewMarkerIcon/SelectNewMarkerIcon";
 
 export function SheetHandler() {
-  const [sheet] = useSubject(currentSheet$);
+  const [sheet] = useSubject(sheet$);
 
   const sheetsMap = {
-    "add-icon": <AddIconBottomSheet />,
+    "edit-new-marker-info": <EditNewMarkerInfo />,
+    "select-new-marker-icon": <SelectNewMarkerIcon />,
   };
 
   if (sheet in sheetsMap) {
