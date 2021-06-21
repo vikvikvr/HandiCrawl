@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { BottomSheet, View } from "react-native";
+import { View } from "react-native";
+import { BottomSheet } from "react-native-btr";
 import { EditIconInfoHeader } from "./EditIconInfoHeader";
 import { EditPlaceNameInput } from "./EditPlaceNameInput";
 import { EditPlaceDescriptionInput } from "./EditPlaceDescriptionInput";

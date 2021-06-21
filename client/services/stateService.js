@@ -3,7 +3,7 @@ import { getBounds } from "./mapService";
 
 // default states
 
-const defaultMarker = {
+export const defaultMarker = {
   placeName: "place name",
   icon: "icon name",
   latitude: 0,
@@ -12,12 +12,12 @@ const defaultMarker = {
   score: 0,
 };
 
-const defaultRegion = {
+export const defaultRegion = {
   latitude: 0,
   longitude: 0,
 };
 
-const defaultBounds = getBounds(defaultRegion);
+export const defaultBounds = getBounds(defaultRegion);
 
 // behaviours subjects
 

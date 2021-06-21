@@ -1,5 +1,6 @@
 import React from "react";
-import { BottomSheet, View } from "react-native";
+import { View } from "react-native";
+import { BottomSheet } from "react-native-btr";
 import { SelectIconHeader } from "./SelectIconHeader";
 import { IconsList } from "./IconsList";
 import { setSheet } from "../../services/stateService";

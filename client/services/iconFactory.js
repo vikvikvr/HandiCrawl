@@ -20,28 +20,27 @@ export const allIcons = [
   "codeworks",
 ];
 
-// export function renderIcon(iconName = "") {
-//   return icons[iconName].icon;
-// }
-
 export function renderIcon(iconName = "") {
   if (!(iconName in icons)) {
     return "no-icon";
   }
+
   return icons[iconName].icon;
 }
 
 export function renderTitle(iconName = "") {
   if (!(iconName in icons)) {
-    return "no-icon";
+    return "no-title";
   }
+  
   return icons[iconName].title;
 }
 
 export function renderDescr(iconName = "") {
   if (!(iconName in icons)) {
-    return "no-icon";
+    return "no-description";
   }
+
   return icons[iconName].description;
 }
 
