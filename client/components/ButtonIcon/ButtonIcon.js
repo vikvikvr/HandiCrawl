@@ -5,7 +5,7 @@ import { styles } from "./styles";
 
 export function ButtonIcon({ onPress, iconName }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} testID="touchable-wrapper">
       <Image
         source={renderIcon(iconName)}
         style={[styles.trashIcon, styles.editIcon]}
