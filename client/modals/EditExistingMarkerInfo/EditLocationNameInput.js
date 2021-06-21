@@ -5,7 +5,9 @@ import { marker$ } from "../../services/stateService";
 import { styles } from "./styles";
 
 export function EditLocationNameInput() {
-  const [marker, setMarker] = useSubject(marker$);
+  // const [marker, setMarker] = useSubject(marker$);
+  const marker = {};
+  const setMarker = () => null;
 
   function updateLocationName(placeName = "") {
     setMarker({ ...marker, placeName });

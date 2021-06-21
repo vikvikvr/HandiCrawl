@@ -4,6 +4,7 @@ import { styles } from "./styles";
 import { useSubject } from "../../hooks/useSubject";
 import { marker$ } from "../../services/stateService";
 import { voteMarker } from "../../services/markerService";
+import { ButtonIcon } from "../../components/ButtonIcon/ButtonIcon";
 
 // vote up / down an existing marker
 export function MarkerVoteEditor() {
