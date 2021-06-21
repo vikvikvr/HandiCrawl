@@ -25,4 +25,4 @@ export function IconsList() {
   );
 }
 
-const styles = {};
+// const styles = {};

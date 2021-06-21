@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "react-native";
-import { setModal } from "services/modalService";
+import { setModal } from "../../services/stateService";
 import { IconsList } from "./IconsList";
 
 // after clicking info icon in the map (video 00:46)

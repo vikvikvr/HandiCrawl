@@ -32,7 +32,7 @@ export function renderTitle(iconName = "") {
   if (!(iconName in icons)) {
     return "no-title";
   }
-
+  
   return icons[iconName].title;
 }
 
