@@ -8,6 +8,6 @@ describe("SendButton", () => {
   });
   it('should show a "send" text ', () => {
     const { getByText } = render(<SendButton />);
-    getByText("Send");
+    getByText(/send/i);
   });
 });
