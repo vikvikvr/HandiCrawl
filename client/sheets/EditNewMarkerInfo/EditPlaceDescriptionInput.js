@@ -15,8 +15,9 @@ export function EditPlaceDescriptionInput() {
       <View style={[styles.editContainer, styles.descriptionContainer]}>
         <TextInput
           multiline={true}
+          placeholder="place description"
           onChangeText={(description) => setMarker({ ...marker, description })}
-          value={marker.placeDescription}
+          value={marker.description}
           style={[styles.generalText, styles.iconText, styles.descriptionText]}
         />
       </View>

@@ -14,8 +14,9 @@ export function EditPlaceNameInput() {
       </Text>
       <View style={styles.editContainer}>
         <TextInput
-          onChangeText={(placeName) => setMarker({ ...marker, placeName })}
+          placeholder="place name"
           value={marker.placeName}
+          onChangeText={(placeName) => setMarker({ ...marker, placeName })}
           style={[styles.generalText, styles.iconText, styles.placeNameText]}
         />
       </View>
