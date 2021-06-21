@@ -12,6 +12,7 @@ export function ShowExistingMarkerInfo() {
       transparent={true}
       onRequestClose={() => setModal("")}
       animationType="slide"
+      testID="show-existing-marker-info"
     >
       <View style={styles.bubble}>
         <Header />
