@@ -4,7 +4,7 @@ import { render } from "@testing-library/react-native";
 import { ButtonIcon } from "./ButtonIcon";
 
 describe("ButtonIcon", () => {
-  it("should render icon button", () => {
+  it("should render without throwing error", () => {
     render(<ButtonIcon />);
   });
 });

@@ -1,10 +1,10 @@
 import "react-native";
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { SendButton } from "./SendButton";
+import { MarkerDetails } from "./MarkerDetails";
 
-describe("SendButton", () => {
+describe("MarkerDetails", () => {
   it("should render without throwing error", () => {
-    render(<SendButton />);
+    render(<MarkerDetails />);
   });
 });

@@ -4,7 +4,7 @@ import { render } from "@testing-library/react-native";
 import { EditExistingMarkerIcon } from "./EditExistingMarkerIcon";
 
 describe("EditExistingMarkerIcon", () => {
-  it("should render list of icons to select from", () => {
+  it("should render without throwing error", () => {
     render(<EditExistingMarkerIcon />);
   });
 });
