@@ -16,7 +16,9 @@ export function EditExistingMarkerInfo() {
       animationType="slide"
     >
       <View style={styles.bubble}>
-        <Title />
+        <Text style={[styles.generalText, styles.titleText]}>
+          Edit Handimarker
+        </Text>
         <GeneralText>Edit icon...</GeneralText>
         <EditIconRow />
         <GeneralText>Edit location...</GeneralText>
@@ -31,10 +33,4 @@ export function EditExistingMarkerInfo() {
 
 function GeneralText({ children }) {
   return <Text style={[styles.generalText, styles.titleText]}>{children}</Text>;
-}
-
-function Title() {
-  return (
-    <Text style={[styles.generalText, styles.titleText]}>Edit Handimarker</Text>
-  );
 }
