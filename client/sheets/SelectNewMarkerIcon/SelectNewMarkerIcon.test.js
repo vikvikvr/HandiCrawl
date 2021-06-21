@@ -8,4 +8,12 @@ describe("SelectNewMarkerIcon", () => {
   it("should render without throwing", () => {
     render(<SelectNewMarkerIcon />);
   });
+  it("should render the header", () => {
+    const screen = render(<SelectNewMarkerIcon />);
+    screen.getByTestId("select-icon-header");
+  });
+  it("should render the icons list", () => {
+    const screen = render(<SelectNewMarkerIcon />);
+    screen.getByTestId("icons-list");
+  });
 });

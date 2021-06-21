@@ -7,7 +7,7 @@ import { selectNewMarkerIcon } from "../../services/markerService";
 
 export function IconsList() {
   return (
-    <View style={styles.buttonsContainer}>
+    <View style={styles.buttonsContainer} testID="icons-list">
       {allIcons.map((iconName) => {
         return (
           <MarkerIcon
