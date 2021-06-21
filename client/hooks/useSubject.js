@@ -5,11 +5,11 @@ export function useSubject(subject$) {
   useEffect(handleSubscription, []);
 
   function handleSubscription() {
-    subject$.subscribe((newValue) => {
+    const subscription = subject$.subscribe((newValue) => {
       setValue(newValue);
     });
     return () => {
-      subject$.unsubscribe();
+      subscription.unsubscribe();
     };
   }
 
