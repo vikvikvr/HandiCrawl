@@ -21,14 +21,26 @@ export const allIcons = [
 ];
 
 export function renderIcon(iconName = "") {
+  if (!(iconName in icons)) {
+    return "no-icon";
+  }
+
   return icons[iconName].icon;
 }
 
 export function renderTitle(iconName = "") {
+  if (!(iconName in icons)) {
+    return "no-title";
+  }
+
   return icons[iconName].title;
 }
 
 export function renderDescr(iconName = "") {
+  if (!(iconName in icons)) {
+    return "no-description";
+  }
+
   return icons[iconName].description;
 }
 
