@@ -18,7 +18,7 @@ export function EditNewMarkerInfo() {
       onBackButtonPress={() => setSheet("")}
       onBackdropPress={() => setSheet("")}
     >
-      <View style={styles.bottomAddIconView}>
+      <View style={styles.bottomAddIconView} testID="edit-new-marker-info">
         <EditIconInfoHeader />
         <EditPlaceNameInput />
         <EditPlaceDescriptionInput />
