@@ -7,10 +7,6 @@ import { marker$ } from "../../services/stateService";
 export function EditPlaceDescriptionInput() {
   const [marker, setMarker] = useSubject(marker$);
 
-  function updatePlaceDescription(description = "") {
-    setMarker({ ...marker, description });
-  }
-
   return (
     <View style={styles.locationContainer}>
       <Text style={[styles.generalText, styles.propertyText]}>
@@ -19,7 +15,7 @@ export function EditPlaceDescriptionInput() {
       <View style={[styles.editContainer, styles.descriptionContainer]}>
         <TextInput
           multiline={true}
-          onChangeText={updatePlaceDescription}
+          onChangeText={(description) => setMarker({ ...marker, description })}
           value={marker.placeDescription}
           style={[styles.generalText, styles.iconText, styles.descriptionText]}
         />
