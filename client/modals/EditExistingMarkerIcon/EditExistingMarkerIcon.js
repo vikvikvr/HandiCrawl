@@ -10,6 +10,7 @@ export function EditExistingMarkerIcon() {
       transparent={true}
       onRequestClose={() => setModal("")}
       animationType="slide"
+      testID="edit-existing-marker-icon"
     >
       <View style={styles.bubble}>
         <Text style={[styles.generalText, styles.titleText]}>

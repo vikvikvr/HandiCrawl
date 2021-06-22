@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { Text, View } from "react-native";
 import { MapRender } from "./components/MapRender/MapRender";
+import { TopRightInfoIcon } from "./components/MapRender/TopRightInfoIcon";
 import { styles, useAppFonts } from "./App.styles.js";
-import { SearchBar } from "./components/SearchBar";
+import { SearchBar } from "./components/MapRender/SearchBar";
 import { ModalHandler } from "./containers/ModalHandler";
 import { SheetHandler } from "./containers/SheetHandler";
 import { setupMarkers } from "./services/mapService";
@@ -15,9 +16,10 @@ export default function App() {
   useEffect(setup, []);
 
   function setup() {
-    setupMarkers()
-      .then(() => setAppIsReady(true))
-      .catch((u_u) => console.log("error in prepare0", u_u));
+    setAppIsReady(true);
+    // setupMarkers()
+    //   .then(() => setAppIsReady(true))
+    //   .catch((u_u) => console.log("error in prepare0", u_u));
   }
 
   if (!appIsReady) {
@@ -43,7 +45,7 @@ export default function App() {
 
 function AppHeader() {
   return (
-    <View style={styles.topMainView}>
+    <View style={styles.topMainView} testID="app-header">
       <Text style={[styles.generalText, styles.topMainViewText]}>
         Click on a marker to get and edit information
       </Text>

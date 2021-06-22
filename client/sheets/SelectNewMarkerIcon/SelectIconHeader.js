@@ -6,7 +6,7 @@ import { ButtonIcon } from "../../components/ButtonIcon/ButtonIcon";
 
 export function SelectIconHeader() {
   return (
-    <View>
+    <View testID="select-icon-header">
       <Text style={[styles.generalText, styles.header]}>Add a HandiMarker</Text>
       <CloseIcon />
     </View>

@@ -1,7 +1,10 @@
 import "react-native";
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import { SelectIconHeader } from "./SelectIconHeader";
+import * as stateService from "../../services/stateService";
+
+const setSheetSpy = jest.spyOn(stateService, "setSheet");
 
 describe("SelectIconHeader", () => {
   it("should render without throwing", () => {
@@ -9,6 +12,13 @@ describe("SelectIconHeader", () => {
   });
   it("should display helper text", () => {
     const { getByText } = render(<SelectIconHeader />);
-    getByText(/dd a HandiMarker/i);
+    getByText(/add a HandiMarker/i);
+  });
+  it("should close sheet on press", () => {
+    const screen = render(<SelectIconHeader />);
+    expect(setSheetSpy).toHaveBeenCalledTimes(0);
+    const button = screen.getByTestId("touchable-wrapper");
+    fireEvent.press(button);
+    expect(setSheetSpy).toHaveBeenLastCalledWith("");
   });
 });

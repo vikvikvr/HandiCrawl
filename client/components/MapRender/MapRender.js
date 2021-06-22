@@ -20,7 +20,7 @@ export function MapRender() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="map-render">
       <MapView
         onRegionChangeComplete={updateMarkersBasedOnPosition}
         style={styles.map}

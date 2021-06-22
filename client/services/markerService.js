@@ -18,7 +18,7 @@ export function startToAddNewMarker(event) {
     return;
   }
 
-  markers$.next({ ...marker$.value, latitude, longitude });
+  marker$.next({ ...marker$.value, latitude, longitude });
   sheet$.next("select-new-marker-icon");
 }
 
@@ -82,14 +82,16 @@ export function saveMarkerChanges() {
 }
 
 export async function saveNewMarker() {
+  const marker = marker$.value;
+  const newMarker = { ...marker };
+  markers$.next([...markers$.value, newMarker]);
   try {
-    const marker = marker$.value;
-    const { _id: id } = await addMarker(marker);
-    const newMarker = { ...marker, id };
-    markers$.next([...markers$.value, newMarker]);
-    sheet$.next("");
+    // TODO: save to database
+    // const { _id: id } = await addMarker(marker);
   } catch (error) {
     console.log("failed to add marker to db");
+  } finally {
+    sheet$.next("");
   }
 }
 

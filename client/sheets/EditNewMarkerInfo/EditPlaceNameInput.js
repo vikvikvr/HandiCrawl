@@ -7,10 +7,6 @@ import { marker$ } from "../../services/stateService";
 export function EditPlaceNameInput() {
   const [marker, setMarker] = useSubject(marker$);
 
-  function updatePlaceName(placeName = "") {
-    setMarker({ ...marker, placeName });
-  }
-
   return (
     <View style={styles.locationContainer}>
       <Text style={[styles.generalText, styles.propertyText]}>
@@ -18,8 +14,9 @@ export function EditPlaceNameInput() {
       </Text>
       <View style={styles.editContainer}>
         <TextInput
-          onChangeText={updatePlaceName}
+          placeholder="place name"
           value={marker.placeName}
+          onChangeText={(placeName) => setMarker({ ...marker, placeName })}
           style={[styles.generalText, styles.iconText, styles.placeNameText]}
         />
       </View>

@@ -10,6 +10,7 @@ export function MarkersKey() {
       animationType="slide"
       transparent={true}
       onRequestClose={() => setModal("")}
+      testID="markers-key"
     >
       <IconsList />
     </Modal>
