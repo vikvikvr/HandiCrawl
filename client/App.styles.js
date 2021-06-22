@@ -1,21 +1,21 @@
 import { Dimensions, StyleSheet } from "react-native";
-import {
-  useFonts,
-  K2D_300Light_Italic,
-  K2D_400Regular_Italic,
-  K2D_500Medium_Italic,
-  K2D_600SemiBold,
-  K2D_800ExtraBold,
-} from "@expo-google-fonts/dev";
+// import {
+//   useFonts,
+//   K2D_300Light_Italic,
+//   K2D_400Regular_Italic,
+//   K2D_500Medium_Italic,
+//   K2D_600SemiBold,
+//   K2D_800ExtraBold,
+// } from "@expo-google-fonts/dev";
 
 export function useAppFonts() {
-  useFonts({
-    K2D_300Light_Italic,
-    K2D_400Regular_Italic,
-    K2D_500Medium_Italic,
-    K2D_600SemiBold,
-    K2D_800ExtraBold,
-  });
+  // useFonts({
+  //   K2D_300Light_Italic,
+  //   K2D_400Regular_Italic,
+  //   K2D_500Medium_Italic,
+  //   K2D_600SemiBold,
+  //   K2D_800ExtraBold,
+  // });
 }
 
 const myScreen = {

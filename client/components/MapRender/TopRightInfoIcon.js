@@ -6,7 +6,7 @@ import { styles } from "./styles";
 
 export function TopRightInfoIcon() {
   return (
-    <View style={styles.infoContainerContainer}>
+    <View style={styles.infoContainerContainer} testID="top-right-info-icon">
       <ButtonIcon onPress={() => setModal("markers-key")} iconName="info" />
     </View>
   );

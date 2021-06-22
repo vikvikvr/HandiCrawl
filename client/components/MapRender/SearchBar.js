@@ -1,8 +1,9 @@
+import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 
-export function SearcBar() {
+export function SearchBar() {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="search-bar">
       <View style={styles.textContainer}>
         <TextInput
           placeholder="Search location..."
