@@ -14,7 +14,7 @@ export function SelectNewMarkerIcon() {
       onBackdropPress={() => setSheet("")}
       style={styles.bottomSheet}
     >
-      <View style={styles.bottomNavigationView}>
+      <View style={styles.bottomNavigationView} testID="select-new-marker-icon">
         <SelectIconHeader />
         <IconsList />
       </View>

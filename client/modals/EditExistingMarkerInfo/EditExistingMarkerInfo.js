@@ -14,9 +14,12 @@ export function EditExistingMarkerInfo() {
       transparent={true}
       onRequestClose={() => setModal("")}
       animationType="slide"
+      testID="edit-existing-marker-info"
     >
       <View style={styles.bubble}>
-        <Title />
+        <Text style={[styles.generalText, styles.titleText]}>
+          Edit Handimarker
+        </Text>
         <GeneralText>Edit icon...</GeneralText>
         <EditIconRow />
         <GeneralText>Edit location...</GeneralText>
@@ -31,10 +34,4 @@ export function EditExistingMarkerInfo() {
 
 function GeneralText({ children }) {
   return <Text style={[styles.generalText, styles.titleText]}>{children}</Text>;
-}
-
-function Title() {
-  return (
-    <Text style={[styles.generalText, styles.titleText]}>Edit Handimarker</Text>
-  );
 }

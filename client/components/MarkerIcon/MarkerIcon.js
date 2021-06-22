@@ -8,8 +8,8 @@ export function MarkerIcon({ iconName, isLarge, hasBorder, onPress }) {
   const styles = makeStyles(isLarge, hasBorder);
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.infoContainer} testID="marker-icon">
+    <TouchableOpacity onPress={onPress} testID="marker-icon">
+      <View style={styles.infoContainer}>
         <Image style={styles.iconImg} source={source} resizeMode="contain" />
       </View>
     </TouchableOpacity>

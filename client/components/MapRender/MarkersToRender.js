@@ -39,7 +39,7 @@ export function MarkersToRender() {
   };
 
   return (
-    <View>
+    <View testID="markers-list">
       {markers.map((marker) => {
         return (
           <View
