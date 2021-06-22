@@ -8,7 +8,10 @@ export function EditPlaceDescriptionInput() {
   const [marker, setMarker] = useSubject(marker$);
 
   return (
-    <View style={styles.locationContainer}>
+    <View
+      style={styles.locationContainer}
+      testID="edit-place-description-input"
+    >
       <Text style={[styles.generalText, styles.propertyText]}>
         Provide some details to help even more =)
       </Text>

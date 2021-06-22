@@ -11,6 +11,6 @@ describe("MapRender", () => {
   });
   it("should render a list of markers", () => {
     const screen = render(<MapRender />);
-    screen.getByTestId("markers-list");
+    screen.getByTestId("markers-to-render");
   });
 });

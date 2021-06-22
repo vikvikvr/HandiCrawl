@@ -5,7 +5,7 @@ function MapView({ children }) {
   return <View testID="map">{children}</View>;
 }
 
-MapView.Marker = function ({ coordinate, onPress }) {
+MapView.Marker = function ({ coordinate, onPress, children }) {
   const event = {
     nativeEvent: {
       coordinate,
@@ -14,7 +14,7 @@ MapView.Marker = function ({ coordinate, onPress }) {
 
   return (
     <View testID="map-marker" onPress={() => onPress(event)}>
-      marker
+      {children}
     </View>
   );
 };

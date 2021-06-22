@@ -18,4 +18,20 @@ describe("EditNewMarkerInfo", () => {
     render(<EditNewMarkerInfo />);
     expect(onMountSpy).toHaveBeenCalledTimes(1);
   });
+  it("should render header", () => {
+    const screen = render(<EditNewMarkerInfo />);
+    screen.getByTestId("edit-icon-info-header");
+  });
+  it("should render name input", () => {
+    const screen = render(<EditNewMarkerInfo />);
+    screen.getByTestId("edit-place-name-input");
+  });
+  it("should render description input", () => {
+    const screen = render(<EditNewMarkerInfo />);
+    screen.getByTestId("edit-place-description-input");
+  });
+  it("should render send button", () => {
+    const screen = render(<EditNewMarkerInfo />);
+    screen.getByTestId("send-button");
+  });
 });
