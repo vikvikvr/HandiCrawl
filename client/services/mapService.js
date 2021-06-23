@@ -2,6 +2,7 @@ import * as Location from "expo-location";
 import { region$, bounds$, marker$ } from "./stateService";
 import { updateMarkersWithinBounds } from "./markerService";
 import { reverseGeocodeAsync } from "expo-location";
+import * as mapService from "./mapService";
 
 // above this zoom level, don't show markers
 export const maxZoom = 0.022;
@@ -36,30 +37,42 @@ export async function getUserLocation() {
 }
 
 export async function setupMarkers() {
-  const hasPermission = await hasLocationPermission();
+  const hasPermission = await mapService.hasLocationPermission();
   if (!hasPermission) {
-    return;
+    return false;
   }
   // get GPS position
-  const { latitude, longitude } = await getUserLocation();
+  const { latitude, longitude } = await mapService.getUserLocation();
   region$.next({ latitude, longitude });
   // calculate square bounds
   const bounds = getBounds({ latitude, longitude });
   bounds$.next(bounds);
-  await updateMarkersWithinBounds();
-  return true;
+
+  try {
+    await updateMarkersWithinBounds();
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
-export function tryToGetPlaceName() {
+function formatPlaceName({ name, street }) {
+  const hasNumber = /\d/.test(name);
+  if (hasNumber) {
+    return street + " " + name;
+  }
+  return name;
+}
+
+export async function tryToGetPlaceName() {
   const marker = marker$.value;
   const region = {
     latitude: marker.latitude,
     longitude: marker.longitude,
   };
-  reverseGeocodeAsync(region).then((addresses) => {
-    const { name, street } = addresses[0];
-    const hasNumber = /\d/.test(name);
-    const placeName = hasNumber ? street + " " + name : name;
+  try {
+    const [address] = await reverseGeocodeAsync(region);
+    const placeName = formatPlaceName(address);
     marker$.next({ ...marker, placeName });
-  });
+  } catch (error) {}
 }
