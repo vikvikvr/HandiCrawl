@@ -40,3 +40,12 @@ export function setModal(modalName = "") {
 export function setSheet(sheetName = "") {
   sheet$.next(sheetName);
 }
+
+export function resetState() {
+  markers$.next([]);
+  region$.next(defaultRegion);
+  bounds$.next(defaultBounds);
+  modal$.next("");
+  sheet$.next("");
+  marker$.next(defaultMarker);
+}

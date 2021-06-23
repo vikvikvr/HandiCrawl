@@ -10,11 +10,12 @@ import { maxZoom, getBounds } from "./mapService";
 import { isWithinBounds } from "../utils/utils";
 import { getMarkers } from "./apiServices";
 
-export function startToAddNewMarker(event) {
-  const { latitude, longitude, latitudeDelta } = event.nativeEvent.coordinate;
+export function startToAddNewMarker({ nativeEvent }) {
+  const { latitude, longitude, latitudeDelta } = nativeEvent.coordinate;
 
-  if (latitudeDelta > maxZoom) {
-    console.log("too zoomed out to add marker");
+  const tooZoomedOut = latitudeDelta > maxZoom;
+
+  if (tooZoomedOut) {
     return;
   }
 
