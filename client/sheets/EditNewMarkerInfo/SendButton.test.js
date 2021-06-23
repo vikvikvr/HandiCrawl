@@ -3,7 +3,10 @@ import { SendButton } from "./SendButton";
 import { render, fireEvent } from "@testing-library/react-native";
 import * as markerService from "../../services/markerService";
 
-const saveNewMarkerSpy = jest.spyOn(markerService, "saveNewMarker");
+const myMock = jest.fn();
+
+markerService.saveNewMarker = myMock;
+
 const buttonText = /send/i;
 
 describe("SendButton", () => {
@@ -16,9 +19,9 @@ describe("SendButton", () => {
   });
   it("should save a new marker on press", () => {
     const { getByText } = render(<SendButton />);
-    expect(saveNewMarkerSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     const button = getByText(buttonText);
     fireEvent.press(button);
-    expect(saveNewMarkerSpy).toHaveBeenCalledTimes(1);
+    expect(myMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -11,7 +11,9 @@ import { styles } from "./styles";
 
 // video 1:11
 export function EditNewMarkerInfo() {
-  useEffect(tryToGetPlaceName, []);
+  useEffect(() => {
+    tryToGetPlaceName();
+  }, []);
 
   return (
     <BottomSheet

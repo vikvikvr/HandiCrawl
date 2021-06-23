@@ -4,18 +4,19 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { TrashButton } from "./TrashButton";
 import * as markerService from "../../services/markerService";
 
-const deleteMarkerSpy = jest.spyOn(markerService, "deleteMarker");
+const myMock = jest.fn();
+
+markerService.deleteMarker = myMock;
 
 describe("TrashButton", () => {
   it("should render without throwing error", () => {
     render(<TrashButton />);
   });
-
   it("should allow to delete the marker on press", () => {
     const screen = render(<TrashButton />);
-    expect(deleteMarkerSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     const button = screen.getByTestId("touchable-wrapper");
     fireEvent.press(button);
-    expect(deleteMarkerSpy).toHaveBeenCalledTimes(1);
+    expect(myMock).toHaveBeenCalledTimes(1);
   });
 });

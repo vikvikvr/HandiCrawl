@@ -5,7 +5,9 @@ import { IconsList } from "./IconsList";
 import { allIcons } from "../../services/iconFactory";
 import * as markerService from "../../services/markerService";
 
-const pressHandler = jest.spyOn(markerService, "selectNewMarkerIcon");
+const myMock = jest.fn();
+
+markerService.selectNewMarkerIcon = myMock;
 
 describe("IconsList", () => {
   it("should render without throwing", () => {
@@ -20,8 +22,8 @@ describe("IconsList", () => {
     const { getAllByTestId } = render(<IconsList />);
     const buttons = getAllByTestId("marker-icon");
     fireEvent.press(buttons[0]);
-    expect(pressHandler).toHaveBeenLastCalledWith(allIcons[0]);
+    expect(myMock).toHaveBeenLastCalledWith(allIcons[0]);
     fireEvent.press(buttons[3]);
-    expect(pressHandler).toHaveBeenLastCalledWith(allIcons[3]);
+    expect(myMock).toHaveBeenLastCalledWith(allIcons[3]);
   });
 });

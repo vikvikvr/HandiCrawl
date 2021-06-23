@@ -4,8 +4,10 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { MarkerVoteEditor } from "./MarkerVoteEditor";
 import * as markerService from "../../services/markerService";
 
-const voteMarkerSpy = jest.spyOn(markerService, "voteMarker");
-afterEach(jest.resetAllMocks);
+const myMock = jest.fn();
+markerService.voteMarker = myMock;
+
+beforeEach(jest.resetAllMocks);
 
 describe("MarkerVoteEditor", () => {
   it("should render without throwing error", () => {
@@ -23,15 +25,15 @@ describe("MarkerVoteEditor", () => {
   it("should allow to vote marker up on press", () => {
     const screen = render(<MarkerVoteEditor />);
     const voteUp = screen.getAllByTestId("touchable-wrapper")[0];
-    expect(voteMarkerSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     fireEvent.press(voteUp);
-    expect(voteMarkerSpy).toHaveBeenLastCalledWith(1);
+    expect(myMock).toHaveBeenLastCalledWith(1);
   });
   it("should allow to vote marker down on press", () => {
     const screen = render(<MarkerVoteEditor />);
     const voteDown = screen.getAllByTestId("touchable-wrapper")[1];
-    expect(voteMarkerSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     fireEvent.press(voteDown);
-    expect(voteMarkerSpy).toHaveBeenLastCalledWith(-1);
+    expect(myMock).toHaveBeenLastCalledWith(-1);
   });
 });

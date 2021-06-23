@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { MarkersToRender } from "./MarkersToRender";
-import { defaultMarker, markers$ } from "../../services/stateService";
+import { defaultMarker, markers$, region$ } from "../../services/stateService";
 
 describe("MarkersToRender", () => {
   it("should render without throwing", () => {
@@ -19,5 +19,10 @@ describe("MarkersToRender", () => {
     const screen = render(<MarkersToRender />);
     const markers = screen.getAllByTestId("marker-icon");
     expect(markers).toHaveLength(2);
+  });
+  it("should render nothing if too zoomed out", () => {
+    region$.next({ ...region$.value, latitudeDelta: 1 });
+    const screen = render(<MarkersToRender />);
+    expect(screen.toJSON()).toEqual(null);
   });
 });

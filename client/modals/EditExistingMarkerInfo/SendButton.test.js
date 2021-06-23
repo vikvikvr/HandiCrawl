@@ -4,7 +4,8 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { SendButton } from "./SendButton";
 import * as markerService from "../../services/markerService";
 
-const onPressSpy = jest.spyOn(markerService, "saveMarkerChanges");
+const myMock = jest.fn();
+markerService.saveMarkerChanges = myMock;
 
 describe("SendButton", () => {
   it("should render without throwing error", () => {
@@ -17,8 +18,8 @@ describe("SendButton", () => {
   it("should handle press events", () => {
     const screen = render(<SendButton />);
     const button = screen.getByText(/send update/i);
-    expect(onPressSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     fireEvent.press(button);
-    expect(onPressSpy).toHaveBeenCalledTimes(1);
+    expect(myMock).toHaveBeenCalledTimes(1);
   });
 });

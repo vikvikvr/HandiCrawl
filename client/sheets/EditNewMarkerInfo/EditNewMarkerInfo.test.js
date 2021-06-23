@@ -5,7 +5,8 @@ import * as mapService from "../../services/mapService";
 
 jest.mock("react-native-btr");
 
-const onMountSpy = jest.spyOn(mapService, "tryToGetPlaceName");
+const myMock = jest.fn();
+mapService.tryToGetPlaceName = myMock;
 
 beforeEach(jest.resetAllMocks);
 
@@ -14,9 +15,9 @@ describe("EditNewMarkerInfo", () => {
     render(<EditNewMarkerInfo />);
   });
   it("should try to get place name on mount", () => {
-    expect(onMountSpy).toHaveBeenCalledTimes(0);
+    expect(myMock).toHaveBeenCalledTimes(0);
     render(<EditNewMarkerInfo />);
-    expect(onMountSpy).toHaveBeenCalledTimes(1);
+    expect(myMock).toHaveBeenCalledTimes(1);
   });
   it("should render header", () => {
     const screen = render(<EditNewMarkerInfo />);
