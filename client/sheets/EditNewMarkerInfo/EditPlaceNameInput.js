@@ -8,7 +8,7 @@ export function EditPlaceNameInput() {
   const [marker, setMarker] = useSubject(marker$);
 
   return (
-    <View style={styles.locationContainer}>
+    <View style={styles.locationContainer} testID="edit-place-name-input">
       <Text style={[styles.generalText, styles.propertyText]}>
         Address detected. Feel free to modify it =)
       </Text>

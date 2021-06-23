@@ -5,19 +5,14 @@ import { marker$ } from "../../services/stateService";
 import { styles } from "./styles";
 
 export function EditLocationNameInput() {
-  // const [marker, setMarker] = useSubject(marker$);
-  const marker = {};
-  const setMarker = () => null;
-
-  function updateLocationName(placeName = "") {
-    setMarker({ ...marker, placeName });
-  }
+  const [marker, setMarker] = useSubject(marker$);
 
   return (
-    <View style={styles.editContainer}>
+    <View style={styles.editContainer} testID="edit-location-name-input">
       <TextInput
+        placeholder="Location name"
         style={[styles.generalText, styles.iconText, styles.placeNameText]}
-        onChangeText={updateLocationName}
+        onChangeText={(placeName) => setMarker({ ...marker, placeName })}
         value={marker.placeName}
       />
     </View>

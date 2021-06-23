@@ -8,7 +8,7 @@ export function MarkerDetails() {
   const [marker] = useSubject(marker$);
 
   return (
-    <View style={styles.middleBubble}>
+    <View style={styles.middleBubble} testID="marker-details">
       <View style={styles.locationContainer}>
         <Text style={[styles.generalText, styles.placeNameText]}>
           {marker.placeName}

@@ -12,7 +12,7 @@ export function Header() {
   const [marker] = useSubject(marker$);
 
   return (
-    <View>
+    <View testID="header">
       <MarkerIcon iconName={marker.icon} isLarge hasBorder />
       <MarkerVoteEditor />
       <View style={styles.editBubble}>

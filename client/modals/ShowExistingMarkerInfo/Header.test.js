@@ -7,4 +7,16 @@ describe("Header", () => {
   it("should render without throwing error", () => {
     render(<Header />);
   });
+  it("should render a marker vote editor", () => {
+    const screen = render(<Header />);
+    screen.getByTestId("marker-vote-editor");
+  });
+  it("should render a trash button", () => {
+    const screen = render(<Header />);
+    screen.getByTestId("trash-button");
+  });
+  it("should render an edit button", () => {
+    const screen = render(<Header />);
+    screen.getByTestId("edit-button");
+  });
 });

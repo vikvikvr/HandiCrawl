@@ -5,20 +5,18 @@ import { marker$ } from "../../services/stateService";
 import { styles } from "./styles";
 
 export function EditDescriptionInput() {
-  // const [marker, setMarker] = useSubject(marker$);
-  const marker = {};
-  const setMarker = () => null;
-
-  function updateDescription(description = "") {
-    setMarker({ ...marker, description });
-  }
+  const [marker, setMarker] = useSubject(marker$);
 
   return (
-    <View style={[styles.editContainer, styles.descriptionContainer]}>
+    <View
+      style={[styles.editContainer, styles.descriptionContainer]}
+      testID="edit-description-input"
+    >
       <TextInput
+        placeholder="Place description"
         multiline={true}
         style={[styles.generalText, styles.iconText, styles.placeNameText]}
-        onChangeText={updateDescription}
+        onChangeText={(description) => setMarker({ ...marker, description })}
         value={marker.description}
       />
     </View>

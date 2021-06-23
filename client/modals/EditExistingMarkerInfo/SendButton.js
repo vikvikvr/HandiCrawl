@@ -5,7 +5,7 @@ import { styles } from "./styles";
 
 export function SendButton() {
   return (
-    <View style={styles.sendButton}>
+    <View style={styles.sendButton} testID="send-button">
       <TouchableOpacity onPress={saveMarkerChanges}>
         <Text style={[styles.generalText, styles.sendButtonUpdate]}>
           Send Update

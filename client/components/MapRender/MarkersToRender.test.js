@@ -14,4 +14,10 @@ describe("MarkersToRender", () => {
     const elements = screen.getAllByTestId("map-marker");
     expect(elements).toHaveLength(2);
   });
+  it("should show an icon inside every marker", () => {
+    markers$.next([defaultMarker, defaultMarker]);
+    const screen = render(<MarkersToRender />);
+    const markers = screen.getAllByTestId("marker-icon");
+    expect(markers).toHaveLength(2);
+  });
 });

@@ -11,7 +11,7 @@ export function MarkerVoteEditor() {
   const [marker] = useSubject(marker$);
 
   return (
-    <View style={styles.thumbsContainer}>
+    <View style={styles.thumbsContainer} testID="marker-vote-editor">
       <ButtonIcon iconName="voteUp" onPress={() => voteMarker(1)} />
       <Text style={[styles.generalText, styles.scoreText]}>{marker.score}</Text>
       <ButtonIcon iconName="voteDown" onPress={() => voteMarker(-1)} />

@@ -5,10 +5,7 @@ export function SearchBar() {
   return (
     <View style={styles.container} testID="search-bar">
       <View style={styles.textContainer}>
-        <TextInput
-          placeholder="Search location..."
-          style={styles.text}
-        ></TextInput>
+        <TextInput placeholder="Search location..." style={styles.text} />
       </View>
     </View>
   );

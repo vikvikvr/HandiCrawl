@@ -8,7 +8,7 @@ import { styles } from "./styles";
 
 export function IconsList() {
   return (
-    <View style={styles.iconButtons}>
+    <View style={styles.iconButtons} testID="icons-list">
       {allIcons.map((iconName) => {
         return (
           <View style={styles.iconImgContainer}>
@@ -24,5 +24,3 @@ export function IconsList() {
     </View>
   );
 }
-
-// const styles = {};

@@ -6,7 +6,7 @@ import { allIcons } from "../../services/iconFactory";
 
 export function IconsList() {
   return (
-    <View style={styles.infoModalView}>
+    <View style={styles.infoModalView} testID="icons-list">
       {allIcons.map((iconName) => {
         return <MarkerIcon iconName={iconName} isLarge key={iconName} />;
       })}
