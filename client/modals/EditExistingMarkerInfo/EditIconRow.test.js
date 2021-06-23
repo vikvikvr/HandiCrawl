@@ -8,7 +8,7 @@ describe("EditIconRow", () => {
   it("should render without throwing error", () => {
     render(<EditIconRow />);
   });
-  it("should show the marker name", () => {
+  it("should render the marker name", () => {
     marker$.next({ ...marker$.value, icon: "warning" });
     const screen = render(<EditIconRow />);
     screen.getByText(/warning/i);

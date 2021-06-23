@@ -8,7 +8,7 @@ describe("EditButton", () => {
   it("should render without throwing error", () => {
     render(<EditButton />);
   });
-  it("should handle press event", () => {
+  it("should open edit existing marker info modal on press", () => {
     const screen = render(<EditButton />);
     const button = screen.getByTestId("touchable-wrapper");
     fireEvent.press(button);

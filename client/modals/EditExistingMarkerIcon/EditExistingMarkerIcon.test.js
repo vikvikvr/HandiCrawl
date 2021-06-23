@@ -7,7 +7,7 @@ describe("EditExistingMarkerIcon", () => {
   it("should render without throwing error", () => {
     render(<EditExistingMarkerIcon />);
   });
-  it("should show title text", () => {
+  it("should render the title text", () => {
     const screen = render(<EditExistingMarkerIcon />);
     screen.getByText(/choose your icon/i);
   });

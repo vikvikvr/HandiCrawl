@@ -11,11 +11,11 @@ describe("TrashButton", () => {
     render(<TrashButton />);
   });
 
-  it("should fire callback on press", () => {
+  it("should allow to delete the marker on press", () => {
     const screen = render(<TrashButton />);
     expect(deleteMarkerSpy).toHaveBeenCalledTimes(0);
-    const buttonElement = screen.getByTestId("touchable-wrapper");
-    fireEvent.press(buttonElement);
+    const button = screen.getByTestId("touchable-wrapper");
+    fireEvent.press(button);
     expect(deleteMarkerSpy).toHaveBeenCalledTimes(1);
   });
 });

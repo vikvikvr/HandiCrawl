@@ -11,6 +11,6 @@ describe("IconsList", () => {
   it("should render one marker for each icon", () => {
     const screen = render(<IconsList />);
     const markers = screen.getAllByTestId("marker-icon");
-    expect(markers.length).toBe(allIcons.length);
+    expect(markers).toHaveLength(allIcons.length);
   });
 });

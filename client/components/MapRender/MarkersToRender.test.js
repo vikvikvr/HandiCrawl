@@ -17,7 +17,7 @@ describe("MarkersToRender", () => {
   it("should show an icon inside every marker", () => {
     markers$.next([defaultMarker, defaultMarker]);
     const screen = render(<MarkersToRender />);
-    const elements = screen.getAllByTestId("marker-icon");
-    expect(elements).toHaveLength(2);
+    const markers = screen.getAllByTestId("marker-icon");
+    expect(markers).toHaveLength(2);
   });
 });

@@ -11,19 +11,19 @@ describe("IconsList", () => {
   });
 
   it("should render one marker for each icon", () => {
-    const document = render(<IconsList />);
-    const buttons = document.getAllByTestId("marker-icon");
+    const screen = render(<IconsList />);
+    const buttons = screen.getAllByTestId("marker-icon");
     expect(buttons).toHaveLength(allIcons.length);
   });
   it("should render each marker name", () => {
-    const document = render(<IconsList />);
+    const screen = render(<IconsList />);
     allIcons.forEach((iconName) => {
-      document.getByText(icons[iconName].title);
+      screen.getByText(icons[iconName].title);
     });
   });
   it("should store marker name on press", () => {
-    const document = render(<IconsList />);
-    const buttons = document.getAllByTestId("marker-icon");
+    const screen = render(<IconsList />);
+    const buttons = screen.getAllByTestId("marker-icon");
     allIcons.forEach((iconName, i) => {
       fireEvent.press(buttons[i]);
       expect(marker$.value.icon).toBe(iconName);

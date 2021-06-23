@@ -7,7 +7,7 @@ describe("MarkersKey", () => {
   it("should render without throwing error", () => {
     render(<MarkersKey />);
   });
-  it("should render list of icons", () => {
+  it("should render a list of icons", () => {
     const screen = render(<MarkersKey />);
     screen.getByTestId("icons-list");
   });

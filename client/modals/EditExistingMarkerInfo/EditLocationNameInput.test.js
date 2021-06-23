@@ -11,7 +11,7 @@ describe("EditLocationNameInput", () => {
     const screen = render(<EditLocationNameInput />);
     screen.getByPlaceholderText(/location name/i);
   });
-  it("should modify marker data on text change", () => {
+  it("should modify marker location name on text change", () => {
     const screen = render(<EditLocationNameInput />);
     const input = screen.getByPlaceholderText(/location name/i);
     fireEvent.changeText(input, "new-place");

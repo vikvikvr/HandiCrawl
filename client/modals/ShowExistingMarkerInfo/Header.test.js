@@ -15,7 +15,7 @@ describe("Header", () => {
     const screen = render(<Header />);
     screen.getByTestId("trash-button");
   });
-  it("should render a edit button", () => {
+  it("should render an edit button", () => {
     const screen = render(<Header />);
     screen.getByTestId("edit-button");
   });
