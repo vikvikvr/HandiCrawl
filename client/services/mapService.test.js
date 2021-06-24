@@ -39,7 +39,7 @@ describe("mapService", () => {
     });
   });
   describe("getUserLocation", () => {
-    it("should resolves to location coordinates", async () => {
+    it("should resolve to location coordinates", async () => {
       Location.getCurrentPositionAsync = myMock;
       myMock.mockResolvedValue({ coords: "some coords" });
       const call = mapService.getUserLocation();
@@ -47,13 +47,13 @@ describe("mapService", () => {
     });
   });
   describe("setupMarkers", () => {
-    it("should resolves to false if permission was denied", async () => {
+    it("should resolve to false if permission was denied", async () => {
       mapService.hasLocationPermission = myMock;
       myMock.mockResolvedValue(false);
       const call = mapService.setupMarkers();
       await expect(call).resolves.toBe(false);
     });
-    it("should resolves to false if it fails to update markers", async () => {
+    it("should resolve to false if it fails to update markers", async () => {
       mapService.hasLocationPermission = myMock;
       myMock.mockResolvedValue(true);
       mapService.getUserLocation = myMock2;
