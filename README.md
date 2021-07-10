@@ -1,23 +1,23 @@
 <p>
 <img src="https://img.shields.io/badge/React-Native-blue?logo=react">
-<img src="https://img.shields.io/badge/Tests-Jest-C21325?logo=jest">
 <img src="https://img.shields.io/badge/DB-Firebase-FFA50F?logo=firebase">
+<img src="https://img.shields.io/badge/Tests-Jest-C21325?logo=jest">
+
+<img src="https://img.shields.io/badge/Style-Prettier-yellow?logo=prettier">
 </p>
-# HandiCrawl
 
-These wheels are made for rolling.
+# Handi Crawl
 
-A React Native app that helps people with physical impairments tracking architectural barriers.
+A **React Native** app that helps people with physical impairments tracking architectural barriers.
 
-<img align="center"  width="100px" src="docs-assets/handi-crawl-logo.png">
+<img src="./docs-assets/handi-crawl-hero.png">
 
-<img src="./docs-assets/handi-crawl-mocks.png">
-
-[Original project](https://github.com/CalimeRon/HandiCrawl) by Ron Chamma
+Users can **add markers on the map** to notify others about accessibility issues of public places.
+Data is saved in [Firebase](https://firebase.google.com/)'s **Firestore**.
 
 ## Goals
 
-Given an existing project these are the tasks we were assigned:
+Given an [existing project](https://github.com/CalimeRon/HandiCrawl) (by Ron Chamma) here are the tasks we were assigned:
 
 - [x] **Refactor** codebase enforcing consistent naming and separation of concerns
 - [x] Implement unit and integration **tests** achieving high coverage
