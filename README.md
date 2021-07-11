@@ -3,8 +3,9 @@
 <p>
 <img src="https://img.shields.io/badge/React-Native-blue?logo=react">
 <img src="https://img.shields.io/badge/DB-Firebase-FFA50F?logo=firebase">
+<img src="https://img.shields.io/badge/Maps-Google-4285F4?logo=googlemaps">
 <img src="https://img.shields.io/badge/Tests-Jest-C21325?logo=jest">
-<img src="https://img.shields.io/badge/Style-Prettier-yellow?logo=prettier">
+<img src="https://img.shields.io/badge/Style-Prettier-yellow?logo=prettier">  
 </p>
 
 A **React Native** app that helps people with physical impairments tracking architectural barriers.
